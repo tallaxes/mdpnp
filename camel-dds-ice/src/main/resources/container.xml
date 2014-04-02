@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"	
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <util:properties id="defaultProperties">
+        <prop key="activemq.host">localhost</prop>
+        <prop key="activemq.port">61616</prop>
+        <prop key="activemq.concurrentConsumers">5</prop>
+        <prop key="activemq.maxConnections">10</prop>
+        <prop key="mirth.host">localhost</prop>
+        <prop key="mirth.receiver.jms.queue">hl7.in</prop>
+        <prop key="mirth.mllp.port">6660</prop>
+        <prop key="localNetwork">0.0.0.0</prop>
+    </util:properties> 
+
+    <!-- load just system properties to allow dynamic specification of properties file via local.config System property -->
+    <bean id="systemPropertiesConfig"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="placeholderPrefix" value="##" />
+        <property name="placeholderSuffix" value="##" />
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <bean id="optionalProperty" class="org.springframework.beans.factory.config.PropertiesFactoryBean" abstract="true">
+        <property name="ignoreResourceNotFound" value="true"/>
+    </bean>
+
+    <!-- centralize properties so for reference by both spring and camel property placeholders -->
+    <bean id="propertySources" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="propertiesArray">
+            <util:list>
+                <ref local="defaultProperties"/>
+                <util:properties location="classpath:container.properties"/>
+                <bean parent="optionalProperty">
+                    <property name="location" value="classpath:container.test.properties"/>
+                </bean>
+                <util:properties location="classpath:app.properties"/>
+                <bean parent="optionalProperty">
+                    <property name="location" value="classpath:app.test.properties"/>
+                </bean>
+                <!-- local configuration by developer -->
+                <!-- bean parent="optionalProperty">
+                    <property name="location" value="##local.config##"/>
+                </bean -->
+                <!-- externalized configuration in runtime environment -->
+                <!-- bean parent="optionalProperty">
+                    <property name="location" value="##external.config##"/>
+                </bean -->
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="springPropertiesPlaceholder"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="placeholderPrefix" value="{{" />
+        <property name="placeholderSuffix" value="}}" />
+        <property name="properties" ref="propertySources"/>
+    </bean>
+
+</beans>

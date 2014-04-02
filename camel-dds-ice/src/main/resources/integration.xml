@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"	
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:prop="http://camel.apache.org/schema/placeholder"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd
+		http://activemq.apache.org/schema/core http://activemq.org/config/1.0/1.0.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+         ">
+
+
+    <!-- start activemq configuration -->
+    <bean id="jmsConnectionFactory" 
+          class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://{{activemq.host}}:{{activemq.port}}" />
+    </bean>
+
+    <bean id="pooledConnectionFactory" 
+          class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
+        <property name="maxConnections" value="{{activemq.maxConnections}}" />
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+
+    <bean id="jmsConfig" 
+          class="org.apache.camel.component.jms.JmsConfiguration">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="concurrentConsumers" value="{{activemq.concurrentConsumers}}"/>
+    </bean>
+
+    <bean id="amq" 
+          class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="configuration" ref="jmsConfig"/>
+    </bean>
+    <!-- end activemq configuration -->
+
+    
+    <camelContext id="hl7mediator" xmlns="http://camel.apache.org/schema/spring">
+        <camel:propertyPlaceholder id="properties" location="ref:propertySources"/>
+        <route id="testPatientFixture">
+            <from uri="timer:test?repeatCount=1"/>
+            <to uri="bean:testPatient?method=getPatient" />
+            <to uri="log:testPatient" />
+            <to uri="rti:/28/ice::PatientDemographics(com.rti.dds.type.ice.PatientDemographics)/default"/>
+        </route>
+
+        <route id="patientDemographics">
+            <from uri="rti:/28/ice::PatientDemographics(com.rti.dds.type.ice.PatientDemographics)/default"/>
+            <to uri="log:PatientDemographics"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/PatientDemographics"/>
+        </route>
+
+        <route id="deviceConnectivity">
+            <from uri="rti:/28/ice::DeviceConnectivity(com.rti.dds.type.ice.DeviceConnectivity)/default"/>
+            <to uri="log:DeviceConnectivity"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/DeviceConnectivity"/>
+        </route>
+
+        <route id="DeviceIdentity">
+            <from uri="rti:/28/ice::DeviceIdentity(com.rti.dds.type.ice.DeviceIdentity)/default"/>
+            <to uri="log:DeviceIdentity"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/DeviceIdentity"/>
+        </route>
+
+        <route id="InfusionStatus">
+            <from uri="rti:/28/ice::InfusionStatus(com.rti.dds.type.ice.InfusionStatus)/default"/>
+            <to uri="log:InfusionStatus"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/InfusionStatus"/>
+        </route>
+
+        <route id="AlarmSettings">
+            <from uri="rti:/28/ice::AlarmSettings(com.rti.dds.type.ice.AlarmSettings)/default"/>
+            <to uri="log:AlarmSettings"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/AlarmSettings"/>
+        </route>
+
+        <route id="LocalAlarmSettingsObjective">
+            <from uri="rti:/28/ice::LocalAlarmSettingsObjective(com.rti.dds.type.ice.LocalAlarmSettingsObjective)/default"/>
+            <to uri="log:LocalAlarmSettingsObjective"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/LocalAlarmSettingsObjective"/>
+        </route>
+
+        <route id="SampleArray">
+            <from uri="rti:/28/ice::SampleArray(com.rti.dds.type.ice.SampleArray)/default"/>
+            <to uri="log:SampleArray"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/SampleArray"/>
+        </route>
+
+        <route id="GlobalAlarmSettingsObjective">
+            <from uri="rti:/28/ice::GlobalAlarmSettingsObjective(com.rti.dds.type.ice.GlobalAlarmSettingsObjective)/default"/>
+            <to uri="log:GlobalAlarmSettingsObjective"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/GlobalAlarmSettingsObjective"/>
+        </route>
+
+        <route id="Image">
+            <from uri="rti:/28/ice::Image(com.rti.dds.type.ice.Image)/default"/>
+            <to uri="log:Image"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/Image"/>
+        </route>
+
+        <route id="InfusionObjective">
+            <from uri="rti:/28/ice::InfusionObjective(com.rti.dds.type.ice.InfusionObjective)/default"/>
+            <to uri="log:InfusionObjective"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/InfusionObjective"/>
+        </route>
+
+        <route id="Text">
+            <from uri="rti:/28/ice::Text(com.rti.dds.type.ice.Text)/default"/>
+            <to uri="log:Text"/>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="file://c:/mdpnp/ice/Text"/>
+        </route>
+
+    </camelContext>
+		
+
+</beans>
