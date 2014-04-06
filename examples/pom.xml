@@ -31,14 +31,14 @@
   <artifactId>examples</artifactId>
   <packaging>pom</packaging>
 
-  <name>RTI :: Examples</name>
+  <name>mdpnp :: rti :: example</name>
   <description>Examples for the Camel RTI Component</description>
 
   <modules>
+    <module>example-shapes</module>
     <module>example-blueprint</module>
     <module>example-ice</module>
     <module>example-patdemo</module>
-    <module>example-shapes</module>
   </modules>
 
 </project>

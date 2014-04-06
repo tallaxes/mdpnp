@@ -30,7 +30,7 @@
 
   <artifactId>maven-dds-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>RTI :: DDS :: Maven</name>
+  <name>mdpnp :: rti :: tools :: maven</name>
 
   <properties>
     <antlr.version>2.7.7</antlr.version>

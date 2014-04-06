@@ -34,21 +34,11 @@ available in your local maven repo.
 
 ### ICE Dependencies
 
-A number of IDL files have been used to generate Java classes.  
-The PatientDemographic routes require the DDS:Patdemo:DataType project.
-The MDPNP demo-app routes require DDS:Ice::DataType project.  Both are located
-in the examples directory of the [rti-camel-component] project.
-
-The projects will need to be downloaded from the rti-camel-component git site
-and built so that they are available in your local maven repo.  The example
-below uses my local fork rather than the origin git repo so it will pick up any
-development changes.
-
-    git clone https://github.com/EdwardOst/rti-camel-component.git
-    cd rti-camel-component/examples/example-patdemo
-    mvn clean install
-
-They are incorporated into the current project via the pom entries below.
+A number of IDL files have been used to generate Java classes.  The
+PatientDemographic routes require the example-patdemo project.  The MDPNP
+demo-app routes require examples-ice.  Both are located in the examples
+directory.  These projects will need to be built so that they are available in
+your local maven repo.
 
        <dependency>
             <groupId>com.rti.dds.type</groupId>
@@ -65,14 +55,10 @@ They are incorporated into the current project via the pom entries below.
 ### RTI DDS Dependencies
 
 The maven pom for this project uses the maven-dds plugin.  This plugin can be
-found in the [rti-camel-component] project under the tools directory.  Like the
-other dependencies the RTI DDS component must be build locally so it is
-available in the local maven repo.  The example below uses my local fork rather
-than the origin git repo so it will pick up any development changes.
-
-    git clone https://github.com/EdwardOst/rti-camel-component.git
-    cd rti-camel-component/tools/maven-dds
-    mvn clean install
+found in the tools directory.  Like the other dependencies the RTI DDS component
+must be built locally so it is available in the local maven repo.  The example
+below uses my local fork rather than the origin git repo so it will pick up any
+development changes.
 
 Routes
 ------

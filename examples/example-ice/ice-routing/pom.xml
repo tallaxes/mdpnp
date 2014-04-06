@@ -29,7 +29,7 @@
   <groupId>com.rti.dds.camel.ice</groupId>
   <artifactId>example-ice</artifactId>
   <packaging>bundle</packaging>
-  <name>RTI :: Example :: Ice :: Routing</name>
+  <name>mdpnp :: ice :: routing</name>
   <description>An example that demonstrates the use of the Camel RTI component with the RTI Ice demo</description>
 
 	<dependencies>

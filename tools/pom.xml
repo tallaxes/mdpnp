@@ -29,7 +29,7 @@
   <artifactId>tools</artifactId>
   <packaging>pom</packaging>
 
-  <name>RTI :: Tools</name>
+  <name>mdpnp :: rti :: tools</name>
   <description>Maven tools for the Camel RTI Component</description>
 
   <modules>

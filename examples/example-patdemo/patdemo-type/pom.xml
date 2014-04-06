@@ -24,7 +24,7 @@
   <artifactId>patdemo-type</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>DDS :: Patdemo :: DataType</name>
+  <name>mdpnp :: ice :: patient-demographic :: types :: dds</name>
   <description>Generated types for the RTI Patdemo Demo</description>
 
   <properties>

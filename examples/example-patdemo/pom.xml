@@ -31,7 +31,7 @@
   <artifactId>examples-patdemo-parent</artifactId>
   <packaging>pom</packaging>
 
-  <name>RTI :: Examples :: patdemo</name>
+  <name>mdpnp :: ice :: patient-demographic</name>
   <description>Patient demographics example for the Camel RTI Component</description>
 
   <modules>

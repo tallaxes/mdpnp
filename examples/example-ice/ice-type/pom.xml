@@ -24,7 +24,7 @@
   <artifactId>ice-type</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>DDS :: Ice :: DataType</name>
+  <name>mdpnp :: ice :: types :: dds</name>
   <description>Generated types for the RTI Ice Demo</description>
 
   <properties>

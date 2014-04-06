@@ -11,3 +11,10 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /camel-dds-ice/target/
+/examples/example-shapes/shapes-type/target/
+/examples/example-shapes/shapes-routing/target/
+/examples/example-ice/ice-type/target/
+/examples/example-ice/ice-routing/target/
+/examples/example-patdemo/patdemo-type/target/
+/examples/example-patdemo/patdemo-routing/target/
+/tools/maven-dds/target/

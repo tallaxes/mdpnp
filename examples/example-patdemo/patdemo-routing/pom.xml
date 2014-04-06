@@ -29,7 +29,7 @@
   <groupId>com.rti.dds.camel.patdemo</groupId>
   <artifactId>example-patdemo</artifactId>
   <packaging>bundle</packaging>
-  <name>RTI :: Example :: Patdemo :: Routing</name>
+  <name>mdpnp :: ice :: patient-demographic :: routing</name>
   <description>An example that demonstrates the use of the Camel RTI component with the RTI Ice demo</description>
 
 	<dependencies>
