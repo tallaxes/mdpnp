@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# This script will clean up all System V IPC objects created by a
+# particular user.  Of course, you should make sure that those objects
+# aren't in use (the applications aren't running, etc.).
+#
+# Usage:
+#    ipc-clean         [to clean up your own objects]
+#    ipc-clean USER    [to clean up objects for user USER]
+# You need to be the superuser to remove other people's objects.
+#
+# Copyright (c) 2005, Real-Time Innovations, Inc.
+#
+
+user="${1-${USER-${LOGNAME-`whoami`}}}"
+case "$user" in
+    ""|*\ *)  echo "Bad username '$user'!" >&2; exit 1 ;;
+esac
+
+get_ipcrm_flags () {
+    # This is hack-ish because it needs to support the weird Linux
+    # ipcs format as well as the traditional SysV one.  Ah well, at
+    # least Linux ipcrm now supports normal command-line arguments...
+
+    ipcs | awk 'BEGIN              {uc=5;ic=2;f="?"}
+                /^--* Shared /     {uc=3;ic=2;f="m"}
+                /^--* Semaphore /  {uc=3;ic=2;f="s"}
+                /^--* Message /    {uc=3;ic=2;f="q"}
+                ($1~/^[msq]$/)     {f=$1}
+                ($uc=="'"$user"'") {print "-" f,$ic}
+                ($1~/^[msq]$/)     {f="?"}'
+}
+
+flags=`get_ipcrm_flags`
+case "$flags" in
+  *\?*) echo "This script can't handle the output of your ipcs program." >&2
+        exit 11 ;;
+  "")   echo "No IPC objects are owned by user $user."
+        exit 0 ;;
+esac
+
+ipcrm $flags
+
+flags=`get_ipcrm_flags`
+case "$flags" in
+  *\?*) echo "This script can't handle the output of your ipcs program." >&2
+        exit 11 ;;
+  "")   ;;
+  *)    echo "Cleanup of IPC objects for user $user failed!" >&2
+        exit 1 ;;
+esac
+
+exit 0
