@@ -14,26 +14,42 @@ All content and accompanying materials are made available under the terms of the
 Apache License v2.0 which accompanies this distribution and is available at
 http://www.apache.org/licenses/LICENSE-2.0.
 
-Apache Platform Dependencies
-----------------------------
+Dependencies
+------------
+
+### Apache Platform Dependencies
+
 This pom depends on the mdpnp-parent project which in turn imports a pair of
 [apache-platform] pom's for dependencyManagement.  This encapsulates and
 provides a single point of control for Apache dependencies.  Note that the 
 "apache platform" just refers to the fact that the project is intended to
 compose multiple apache projects into a logical "platform".  It is not an Apache
 community project although it is apache v2 licensed as is all work in this repo.
+These projects must be downloaded from git and built locally so that they are
+available in your local maven repo.
 
-ICE Dependencies
-----------------
+    git clone https://github.com/EdwardOst/apache-platform.git
+    cd apache-platform
+    mvn clean install
+
+### ICE Dependencies
+
 A number of IDL files have been used to generate Java classes.  
 The PatientDemographic routes require the DDS:Patdemo:DataType project.
 The MDPNP demo-app routes require DDS:Ice::DataType project.  Both are located
 in the examples directory of the [rti-camel-component] project.
 
 The projects will need to be downloaded from the rti-camel-component git site
-and built so that they are available in your local maven repo.
+and built so that they are available in your local maven repo.  The example
+below uses my local fork rather than the origin git repo so it will pick up any
+development changes.
+
+    git clone https://github.com/EdwardOst/rti-camel-component.git
+    cd rti-camel-component/examples/example-patdemo
+    mvn clean install
 
 They are incorporated into the current project via the pom entries below.
+
        <dependency>
             <groupId>com.rti.dds.type</groupId>
             <artifactId>ice-type</artifactId>
@@ -46,14 +62,27 @@ They are incorporated into the current project via the pom entries below.
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+### RTI DDS Dependencies
+
+The maven pom for this project uses the maven-dds plugin.  This plugin can be
+found in the [rti-camel-component] project under the tools directory.  Like the
+other dependencies the RTI DDS component must be build locally so it is
+available in the local maven repo.  The example below uses my local fork rather
+than the origin git repo so it will pick up any development changes.
+
+    git clone https://github.com/EdwardOst/rti-camel-component.git
+    cd rti-camel-component/tools/maven-dds
+    mvn clean install
+
 Routes
 ------
+
 There are two sets of routes in the project.
 * Patient Demographic
-* DDS Subscribers for MDPNP demo-app
+* MDPNP Demo-App DDS Subscriber
 
-Patient Demographic
--------------------
+### Patient Demographic
+
 Right now it is very simple.  
 It generates a sample PatientDemographic java object which it publishes to a
 DDS topic.  There is a DDS subscriber to the PatientDemographic topic which logs
@@ -69,8 +98,8 @@ TODO:
 * add RESTful interface for driving test case using XSD
 * drive use case with XML over both REST, SOAP, JMS, and flat file
 
-Camel-DDS Subscriber
---------------------
+### MDPNP Demo-App DDS Subscriber
+
 The [MDPNP demo-app][mdpnp-demo] provides a set of simulated medical devices
 which publish data using ICE data formats over DDS.  The camel-ice-dds demo
 includes a set of subscribers to these routes which will log any received
@@ -78,16 +107,19 @@ messages to a file.  Since it uses Camel these messages can be easily routed
 to other endpoints if desired, e.g. JMS, REST or SOAP, enrichment, or further
 processing.
 
-Configuration
--------------
+### Configuration
+
 You may wish to modify the camel routes in the integration.xml file in the 
 src/main/resources directory so that they point to an appropriate directory on
 your machine.  By default the output path is for c:/mdpnp/ice/xxx where xxx is
 the device name.
 
 
-Build and Test
---------------
+Build
+-----
+
+### Compile and Test
+
 To build this project
 
     mvn clean install
@@ -100,13 +132,15 @@ Once the routes are running, run the MDPNP demo-app and launch a simulated
 medical device.  Check the ice directory to see that the messages are logged to
 the appropriate directory.
 
-Deploying
----------
+### Deploy
+
 To generate a stand-alone application using Spring
 ...
 
 To deploy this project to an Apache Karaf container
-...
+
+    karaf> features:addurl mvn:org.mdpnp.demo/camel-dds-ice/1.0-SNAPSHOT/xml/features
+    karaf> features:install camel-dds-ice
 
 To deploy this project to Apache Tomcat
 ...
