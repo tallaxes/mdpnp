@@ -20,15 +20,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.rti.dds.camel</groupId>
-        <artifactId>examples-shapes-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-
     <groupId>com.rti.dds.camel.shapes</groupId>
     <artifactId>example-shapes</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
+
+    <parent>
+        <groupId>org.mdpnp.demo</groupId>
+        <artifactId>vsc</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../../vsc/pom.xml</relativePath>
+    </parent>
+
     <name>mdpnp :: rti :: example :: shapes :: routing</name>
     <description>An example that demonstrates the use of the Camel RTI component with the RTI Shapes demo</description>
 
@@ -36,24 +39,21 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-core</artifactId>
-            <version>${camel.version}</version>
         </dependency>
         <dependency>
             <groupId>com.rti.dds.camel</groupId>
             <artifactId>rti-camel</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.rti.dds</groupId>
             <artifactId>nddsjava</artifactId>
-            <version>${rti.version}</version>
         </dependency>
 
         <!-- Types -->
         <dependency>
             <groupId>com.rti.dds.type</groupId>
             <artifactId>shapes-type</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 		
         <!-- OSGi -->
@@ -67,12 +67,10 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
         </dependency>
 
     </dependencies>
@@ -121,14 +119,10 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>${maven-bundle.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Import-Package>*,com.rti.dds.type</Import-Package>
-                        <Export-Package>com.rti.dds.camel.shapes</Export-Package>
-                        <Private-Package>!*</Private-Package>
+                        <Import-Package>com.rti.dds.type.shape,*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

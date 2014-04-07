@@ -18,62 +18,60 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.rti.dds.camel</groupId>
-    <artifactId>examples-ice-parent</artifactId>
+    <groupId>com.rti.dds.camel.ice</groupId>
+    <artifactId>example-ice</artifactId>
     <version>1.0-SNAPSHOT</version>
-  </parent>
+    <packaging>bundle</packaging>
+    
+    <parent>
+        <groupId>org.mdpnp.demo</groupId>
+        <artifactId>vsc</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../../vsc/pom.xml</relativePath>
+    </parent>
 
-  <groupId>com.rti.dds.camel.ice</groupId>
-  <artifactId>example-ice</artifactId>
-  <packaging>bundle</packaging>
-  <name>mdpnp :: ice :: routing</name>
-  <description>An example that demonstrates the use of the Camel RTI component with the RTI Ice demo</description>
+    <name>mdpnp :: ice :: routing</name>
+    <description>An example that demonstrates the use of the Camel RTI component with the RTI Ice demo</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-core</artifactId>
-			<version>${camel.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.rti.dds.camel</groupId>
-			<artifactId>rti-camel</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.rti.dds</groupId>
-			<artifactId>nddsjava</artifactId>
-			<version>${rti.version}</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.rti.dds.camel</groupId>
+            <artifactId>rti-camel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.rti.dds</groupId>
+            <artifactId>nddsjava</artifactId>
+        </dependency>
 
         <!-- Types -->
-		<dependency>
-			<groupId>com.rti.dds.type</groupId>
-			<artifactId>ice-type</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>com.rti.dds.type</groupId>
+            <artifactId>ice-type</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 		
-		<!-- OSGi -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi</artifactId>
-			<version>3.0.0</version>
-		</dependency>
+        <!-- OSGi -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
-		<!-- logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -81,23 +79,23 @@
         <profile>
             <id>IceExample</id>
             <properties>
-            	<!--  Starting the Ice Example to route from Squares in domain 11 
-            			to Circles in domain 12 
-            	-->
+                <!--  Starting the Ice Example to route from Squares in domain 11 
+                                to Circles in domain 12 
+                -->
                 <target.main.class>com.rti.dds.camel.ice.CamelIceExample</target.main.class>
             </properties>
         </profile>
         <profile>
-        	<id>ComplexIceExample</id>
-        	<properties>
-        		<!--  Starting the Ice Example to route from Squares in domain 11 to
-        				1) Circles in domain 12, where the color is changed to RED 
-        				2) Circles in domain 12, where the x & y are transposed, and the size is
-        						changed to be x/2 
-        				3) a file ice.data/ice.txt
-        		-->
-        		<target.main.class>com.rti.dds.camel.ice.CamelComplexIceExample</target.main.class>
-        	</properties>
+            <id>ComplexIceExample</id>
+            <properties>
+                <!--  Starting the Ice Example to route from Squares in domain 11 to
+                                1) Circles in domain 12, where the color is changed to RED 
+                                2) Circles in domain 12, where the x & y are transposed, and the size is
+                                                changed to be x/2 
+                                3) a file ice.data/ice.txt
+                -->
+                <target.main.class>com.rti.dds.camel.ice.CamelComplexIceExample</target.main.class>
+            </properties>
         </profile>
     </profiles>
 
@@ -118,20 +116,17 @@
                     </systemProperties>
                 </configuration>
             </plugin>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>${maven-bundle.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Import-Package>*,com.rti.dds.type</Import-Package>
-						<Export-Package>com.rti.dds.camel.ice</Export-Package>
-						<Private-Package>!*</Private-Package>
-					</instructions>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Import-Package>com.rti.dds.type.ice,*</Import-Package>
+                        <Export-Package>com.rti.dds.camel.ice</Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

@@ -29,7 +29,7 @@
   <groupId>com.rti.dds.camel</groupId>
   <artifactId>example-blueprint</artifactId>
   <packaging>bundle</packaging>
-  <name>A Camel Blueprint Route</name>
+  <name>mdpnp :: rit :: example :: shapes :: blueprint</name>
   <url>http://www.myorganization.org</url>
 
   <properties>

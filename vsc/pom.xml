@@ -1,0 +1,641 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.mdpnp.demo</groupId>
+    <artifactId>vsc</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.mdpnp.demo</groupId>
+        <artifactId>mdpnp-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../mdpnp-parent/pom.xml</relativePath>
+    </parent>
+
+    <name>mdpnp :: vsc</name>
+    <description>Profiles for virtual service container</description>
+
+    <properties>
+        <!-- controlled by cxf but no cxf property set -->
+        <!-- jettison.version>1.3.4</jettison.version -->
+        <!-- jackson.version>2.0.6</jackson.version -->
+        <!-- jackson-jaxrs.version>2.0.5</jackson-jaxrs.version -->
+        <!-- camel-osgi-version-range>[2.9.0,3)</camel-osgi-version-range>
+        <maven-compiler.version>2.5.1</maven-compiler.version>
+        <maven-bundle.version>2.3.7</maven-bundle.version>
+        <maven-surefire.version>2.8</maven-surefire.version>
+        <activemq.version>5.7.0</activemq.version -->
+
+        
+        <hapi.version>2.1</hapi.version>
+        
+        <!-- need to override mina so that it is compatible with camel -->
+        <mina.version>2.0.7</mina.version>
+                
+        <!-- build properties -->
+        <build-properties>${project.artifactId}.build.properties</build-properties>
+
+        <!-- container properties -->
+        <container-properties>${container}Container.properties</container-properties>
+
+        <!-- app properties -->
+        <app-properties>${project.artifactId}.properties</app-properties>
+
+        <!-- default runtime, overridden by platform profiles -->
+        <container>spring</container>
+        
+        <!-- default spring container xml config file -->
+        <containerConfig>container.xml</containerConfig>
+        
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.talend.se.platform</groupId>
+                <artifactId>tesb</artifactId>
+                <version>${tesb.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.rti.dds</groupId>
+                <artifactId>nddsjava</artifactId>
+                <version>${rti.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rti.dds.camel</groupId>
+                <artifactId>rti-camel</artifactId>
+                <version>${camel-rti.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>${mina.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi</groupId>
+                <artifactId>hapi-osgi-base</artifactId>
+                <version>${hapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-mina2</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <filters>
+            <filter>${container-properties}</filter>
+            <filter>${app-properties}</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>commonProjectProperties</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${build-properties}</file>
+                            </files>
+                            <quiet>true</quiet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>echoCommonMavenPropertiesLoaded</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo>##### Common Properties Loaded #####</echo>
+                                <echo>##### build-properties=${build-properties} #####</echo>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/resources</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/*.properties</include>
+                                        <include>${project.artifactId}-features.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-maven-plugin</artifactId>
+                <!-- camel maven plugin always uses the spring config -->
+                <configuration>
+                    <systemProperties>
+                        <systemProperty>
+                            <key>containerConfig</key>
+                            <value>container.xml</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- unit tests are always us the spring config -->
+                    <systemPropertyVariables>
+                        <container>${container}</container>
+                        <containerConfig>container.xml</containerConfig>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+    
+    <profiles>
+        
+        <profile>
+            <id>logging</id>
+            <!-- this profile configures SLF4J with Spring.  If only SLF4J is
+            needed (usually just the API) then use that directly. -->
+            <activation>
+                <file>
+                    <exists>profiles/logging.profile</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>echoLoggingLoaded</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <echo>##### Logging Loaded #####</echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>spring</id>
+            <activation>
+                <file>
+                    <exists>profiles/spring.profile</exists>
+                </file>
+            </activation>
+            <properties>
+                <container>spring</container>
+                <containerConfig>container.xml</containerConfig>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>echoSpringProfile</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo>##### Profile spring Loaded #####</echo>
+                                        <echo>##### container=${container} #####</echo>
+                                        <echo>##### build-properties=${build-properties} #####</echo>
+                                        <echo>##### container-properties=${container-properties} #####</echo>
+                                        <echo>##### app-properties=${app-properties} #####</echo>
+                                        <echo>##### containerConfig=${containerConfig} #####</echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-rt-transports-http-jetty</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>jetty</id>
+            <activation>
+                <file>
+                    <exists>profiles/jetty.profile</exists>
+                </file>
+            </activation>
+            <properties>
+                <container>jetty</container>
+                <containerConfig>container.xml</containerConfig>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>echoJettyProfile</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo>##### Profile jetty Loaded #####</echo>
+                                        <echo>##### container=${container} #####</echo>
+                                        <echo>##### build-properties=${build-properties} #####</echo>
+                                        <echo>##### container-properties=${container-properties} #####</echo>
+                                        <echo>##### app-properties=${app-properties} #####</echo>
+                                        <echo>##### containerConfig=${containerConfig} #####</echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <configuration>
+                            <webAppConfig>
+                                <contextPath>/${project.artifactId}</contextPath>
+                            </webAppConfig>                            
+                            <!-- systemProperties>
+                                <systemProperty>
+                                    <key>container</key>
+                                    <value>${container}</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>app-properties</key>
+                                    <value>${app-properties}</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>container-properties</key>
+                                    <value>${container-properties}</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>com.sun.management.jmxremote</key>
+                                    <value></value>
+                                </systemProperty>
+                            </systemProperties -->
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-rt-transports-http-jetty</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>    
+
+        <profile>
+            <id>tomcat</id>
+            <activation>
+                <file>
+                    <exists>profiles/tomcat.profile</exists>
+                </file>
+            </activation>
+            <properties>
+                <container>tomcat</container>
+                <containerConfig>container.xml</containerConfig>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+                            <webResources>
+                                <resource>
+                                    <directory>${basedir}/src/main/resources</directory>
+                                    <targetPath>WEB-INF</targetPath>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/*.properties</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/src/main/resources</directory>
+                                    <targetPath>WEB-INF</targetPath>
+                                    <excludes>
+                                        <exclude>**/*.properties</exclude>
+                                    </excludes>
+                                </resource>
+                            </webResources>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>echoTomcatProfile</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo>##### Profile tomcat Loaded #####</echo>
+                                        <echo>##### container=${container} #####</echo>
+                                        <echo>##### build-properties=${build-properties} #####</echo>
+                                        <echo>##### container-properties=${container-properties} #####</echo>
+                                        <echo>##### app-properties=${app-properties} #####</echo>
+                                        <echo>##### containerConfig=${containerConfig} #####</echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <configuration>
+                            <ignorePackaging>true</ignorePackaging>
+                            <systemProperties>
+                                <container>${container}</container>
+                                <app-properties>${app-properties}</app-properties>
+                                <container-properties>${container-properties}</container-properties>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-rt-transports-http-jetty</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                    <version>3.0.1</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>    
+
+        <profile>
+            <id>karaf</id>
+            <activation>
+                <file>
+                    <exists>profiles/karaf.profile</exists>
+                </file>
+            </activation>
+            <properties>
+                <container>karaf</container>
+                <containerConfig>karafContainer.xml</containerConfig>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>echoKarafProfile</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>initialize</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo>##### Profile karaf Loaded #####</echo>
+                                        <echo>##### container=${container} #####</echo>
+                                        <echo>##### build-properties=${build-properties} #####</echo>
+                                        <echo>##### container-properties=${container-properties} #####</echo>
+                                        <echo>##### app-properties=${app-properties} #####</echo>
+                                        <echo>##### containerConfig=${containerConfig} #####</echo>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- necessary to account for https://issues.apache.org/jira/browse/FELIX-3352 -->
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-karaf-resources</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/resources</outputDirectory>
+                                    <resources>          
+                                        <resource>
+                                            <directory>src/main/resources</directory>
+                                            <filtering>true</filtering>
+                                            <includes>
+                                                <include>**/*.properties</include>
+                                                <!-- filter features.xml file -->
+                                                <include>${project.artifactId}-features.xml</include>
+                                                <!-- filter applicationContext prior to packaging -->
+                                                <include>META-INF/spring/applicationContext.xml</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>              
+                                </configuration>            
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.felix</groupId>
+                        <artifactId>maven-bundle-plugin</artifactId>
+                        <configuration>
+                            <instructions>
+                                <!-- necessary to account for https://issues.apache.org/jira/browse/FELIX-3352 -->
+                                <Include-Resource>
+                                    {maven-resources},
+                                    target/resources
+                                </Include-Resource>
+                                <_versionpolicy>${osgi.import.default.version}</_versionpolicy>
+                            </instructions>
+                            <supportedProjectTypes>
+                                <supportedProjectType>jar</supportedProjectType>
+                                <supportedProjectType>bundle</supportedProjectType>
+                                <supportedProjectType>war</supportedProjectType>
+                            </supportedProjectTypes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>bundle-manifest</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>manifest</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>target/resources/${project.artifactId}-features.xml</file>
+                                            <classifier>features</classifier>
+                                            <type>xml</type>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- plugin>
+                        <groupId>org.apache.karaf.tooling</groupId>
+                        <artifactId>features-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-features-xml</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>generate-features-xml</goal>
+                                </goals>
+                                <configuration>
+                                    <karafVersion>${karaf.version}</karafVersion>
+                                    <outputFile>target/resources/${project.build.finalName}-feature.xml</outputFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin -->
+                    <!-- includeProject>true</includeProject -->
+                    <!-- bundles>src/main/resources/bundles.properties</bundles -->
+                    <!-- ${project.groupId}:${project.artifactId}:${project.version} -->
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-rt-transports-http-jetty</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>    
+
+        <!-- remember that when invoking profiles via the -P option, all 
+        profiles must be specified.  So these profiles are mostly for scripted
+        deployments in which all profiles have been identified in advance. -->
+        <profile>
+            <id>localTarget</id>
+            <properties>
+                <distributionManagement.repository.url>http://localhost:8081/nexus/content/repositories/releases/</distributionManagement.repository.url>
+                <distributionManagement.snapshotRepository.url>http://localhost:8081/nexus/content/repositories/snapshots/</distributionManagement.snapshotRepository.url>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ec2Target</id>
+            <properties>
+                <distributionManagement.repository.url>http://nexus.openmashvista.net:11681/nexus/content/repositories/releases/</distributionManagement.repository.url>
+                <distributionManagement.snapshotRepository.url>http://nexus.openmashvista.net:11681/nexus/content/repositories/snapshots/</distributionManagement.snapshotRepository.url>
+            </properties>
+        </profile>
+
+    </profiles>
+
+</project>

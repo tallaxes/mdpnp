@@ -30,11 +30,11 @@
     <feature version="${camel.version}">camel-jaxb</feature>
     <feature version="${camel.version}">camel-cxf</feature>
 
-    <bundle dependency='true'>mvn:com.rti.dds/nddsjava/5.1.0</bundle>
-    <bundle dependency='true'>mvn:com.rti.dds.camel/rti-camel/1.0-SNAPSHOT</bundle>
+    <bundle dependency='true'>mvn:com.rti.dds/nddsjava/${rti.version}</bundle>
+    <bundle dependency='true'>mvn:com.rti.dds.camel/rti-camel/${camel-rti.version}</bundle>
 
-    <bundle dependency='true'>mvn:com.rti.dds.type/ice-type/1.0-SNAPSHOT</bundle>
-    <bundle dependency='true'>mvn:com.rti.dds.type/patdemo-type/1.0-SNAPSHOT</bundle>
+    <bundle dependency='true'>mvn:com.rti.dds.type/ice-type/${project.version}</bundle>
+    <bundle dependency='true'>mvn:com.rti.dds.type/patdemo-type/${project.version}</bundle>
 
     <bundle>mvn:${project.groupId}/${project.build.finalName}/${project.version}</bundle>
   </feature>

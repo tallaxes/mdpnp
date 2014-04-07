@@ -18,10 +18,8 @@ package com.rti.dds.camel.shapes;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.EndpointInject;
 
-import com.rti.dds.type.ShapeType;
+import com.rti.dds.type.shape.ShapeType;
 
 /**
  * A bean which we use in the route

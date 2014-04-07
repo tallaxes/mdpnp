@@ -5,10 +5,15 @@
 /* This software is provided "as is", without warranty, express or implied.  */
 /*                                                                           */
 /*****************************************************************************/
+
+module shape {
+
 struct ShapeType
 {
     string<128> color; //@key
     long x;
     long y;
     long shapesize;
+};
+
 };
