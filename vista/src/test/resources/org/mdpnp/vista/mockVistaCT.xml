@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"	
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:prop="http://camel.apache.org/schema/placeholder"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd
+		http://activemq.apache.org/schema/core http://activemq.org/config/1.0/1.0.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+         ">
+
+    <bean id="rpcTransport" class="org.mdpnp.vista.transport.camel.CamelTransport">
+        <constructor-arg ref="vistaContext"/>
+        <constructor-arg value="direct:in"/>
+    </bean>
+
+    <bean id="rpcConnection" class="org.mdpnp.vista.rpc.VistaRpcConnection">
+        <constructor-arg ref="rpcTransport" />
+    </bean>
+
+    <!-- emr is the interface under test -->
+    <bean id="emr" class="org.mdpnp.vista.rpc.VistaRpcBinding">
+        <constructor-arg ref="rpcConnection"/>
+    </bean>
+
+    <camelContext id="vistaContext" xmlns="http://camel.apache.org/schema/spring">
+        <camel:propertyPlaceholder id="vista-test-properties" location="classpath:vista-component-test.properties" />
+
+        <!-- component endpoint contract -->
+        <endpoint id="in" uri="direct:in"/>
+
+        <route id="vista-route">
+            <from ref="in" />
+            <to uri="log:vista.request?level=DEBUG&amp;showHeaders=true"/>
+            <to uri="vista:{{vista.client.host}}:{{vista.client.port}}" />
+            <to uri="log:vista.response?level=DEBUG&amp;showHeaders=true"/>
+        </route>        
+        
+    </camelContext>
+    
+</beans>

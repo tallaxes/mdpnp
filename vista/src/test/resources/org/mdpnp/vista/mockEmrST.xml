@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" xmlns:util="http://www.springframework.org/schema/util">
+
+    <camelContext id="vistaContext" xmlns="http://camel.apache.org/schema/spring">
+        <propertyPlaceholder id="vista-test-properties" location="classpath:vista-test.properties" />
+
+        <!-- EMR is the interface under test -->
+        <!-- use camel as a service registry to bind interface proxy to endpoint -->
+        <proxy id="emr" serviceUrl="direct:in" serviceInterface="org.mdpnp.vista.api.MedicalRecord" />
+        
+        <!-- component endpoint contract -->
+        <endpoint id="in" uri="direct:in"/>
+
+        <route id="vista-route">
+            <from ref="in" />
+            <!-- same old unit test mock is still driving behind the wrapper -->
+            <to uri="bean:mockEmr?method=getPatient" />
+        </route>
+    </camelContext>
+
+</beans>

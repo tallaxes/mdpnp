@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" xmlns:util="http://www.springframework.org/schema/util">
+
+    <camelContext id="patientFixtureContext" xmlns="http://camel.apache.org/schema/spring">
+        
+        <!-- component endpoint contract -->
+        <endpoint id="driver" uri="direct:driver"/>
+        <endpoint id="probe" uri="direct:probe"/>
+        
+        <route id="driver">
+            <from uri="dataset:patientTestDataSet"/>
+            <setBody>
+                <simple>${body.id}</simple>
+            </setBody>
+            <to uri="direct:driver"/>
+        </route>
+
+
+        <route id="probe">
+            <from uri="direct:probe"/>
+            <setHeader headerName="CamelDataSetIndex">
+                <simple>${body.id}--</simple>
+            </setHeader>
+            <to uri="log:patientTestDataSet.postSplit?showHeaders=true"/>
+            <to uri="dataset:patientTestDataSet" />
+        </route>
+    </camelContext>
+
+</beans>

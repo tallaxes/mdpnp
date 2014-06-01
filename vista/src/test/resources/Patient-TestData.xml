@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" xmlns:util="http://www.springframework.org/schema/util">
+
+
+    <!-- test data should match that in the sample VistA instance used for 
+    integration testing since it is used for expected results -->
+    <util:list id="patientTestData" value-type="org.mdpnp.vista.api.Patient">
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="1"/>
+                <property name="ssn" value="000-00-3322"/>
+                <property name="name" value="ZZ PATIENT,TEST ONE"/>
+                <property name="sex" value="female"/>
+                <property name="dob" value="1945-01-24"/>
+            </bean>
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="2"/>
+                <property name="ssn" value=""/>
+                <property name="name" value="ZZ PATIENT,TEST TWO"/>
+                <property name="sex" value="male"/>
+                <property name="dob" value="1957-12-25"/>
+            </bean>
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="3"/>
+                <property name="ssn" value=""/>
+                <property name="name" value="ZZ PATIENT,TEST THREE"/>
+                <property name="sex" value="male"/>
+                <property name="dob" value="1968-01-15"/>
+            </bean>
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="4"/>
+                <property name="ssn" value="123-45-6789"/>
+                <property name="name" value="OST,EDWARD"/>
+                <property name="sex" value="male"/>
+                <property name="dob" value="1967-06-10"/>
+            </bean>
+    </util:list>
+
+    <bean id="patientTestDataSet" class="org.mdpnp.vista.mock.PatientTestDataSet">
+        <constructor-arg ref="patientTestData" />
+    </bean>
+        
+</beans>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd" xmlns:util="http://www.springframework.org/schema/util">
+
+    <camelContext id="vistaTestContext" xmlns="http://camel.apache.org/schema/spring">
+        <propertyPlaceholder id="vista-test-properties" location="classpath:vista-test.properties" />
+
+        <!-- contract 
+        patientFixtureContext exists
+        bean:emr exists
+        -->
+        
+        <route id="testGetPatient">
+            <from uri="patientFixtureContext:driver"/>
+            <to uri="bean:emr?method=getPatient"/>
+            <to uri="log:result"/>
+            <to uri="patientFixtureContext:probe"/>
+        </route>
+    
+    </camelContext>
+
+</beans>
