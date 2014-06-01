@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dds="http://www.omg.org/dds" xmlns:tns="http://www.omg.org/IDL-Mapped/" targetNamespace="http://www.omg.org/IDL-Mapped/">
+    <xsd:import namespace="http://www.omg.org/dds" schemaLocation="rti_dds_topic_types_common.xsd"/>
+    <xsd:simpleType name="ice.INTU8">
+        <xsd:restriction base="xsd:unsignedByte">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.INT16">
+        <xsd:restriction base="xsd:short">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.INTU16">
+        <xsd:restriction base="xsd:unsignedShort">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.INT32">
+        <xsd:restriction base="xsd:int">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.INTU32">
+        <xsd:restriction base="xsd:unsignedInt">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.BITS16">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.BITS32">
+        <xsd:restriction base="tns:ice.INTU32">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.TIME_T">
+        <xsd:restriction base="xsd:int">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.OIDType">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.PrivateOid">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.HANDLE">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.InstNumber">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.FLOATType">
+        <xsd:restriction base="xsd:float">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.UDI">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="100" fixed="true"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.MdsContext">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="ice.GLBHANDLE">
+        <xsd:sequence>
+            <xsd:element name="context_id" minOccurs="1" maxOccurs="1" type="tns:ice.MdsContext"/>
+            <xsd:element name="handle" minOccurs="1" maxOccurs="1" type="tns:ice.HANDLE"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.ManagedObjectId">
+        <xsd:sequence>
+            <xsd:element name="m_obj_class" minOccurs="1" maxOccurs="1" type="tns:ice.OIDType"/>
+            <xsd:element name="m_obj_inst" minOccurs="1" maxOccurs="1" type="tns:ice.GLBHANDLE"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:simpleType name="ice.NomPartition">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="nom_part_unspec">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0 -->
+            <xsd:enumeration value="nom_part_obj">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>1</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 1 -->
+            <xsd:enumeration value="nom_part_metric">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>2</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 2 -->
+            <xsd:enumeration value="nom_part_alert">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>3</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 3 -->
+            <xsd:enumeration value="nom_part_dim">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>4</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 4 -->
+            <xsd:enumeration value="nom_part_vattr">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>5</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 5 -->
+            <xsd:enumeration value="nom_part_pgrp">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>6</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 6 -->
+            <xsd:enumeration value="nom_part_sites">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>7</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 7 -->
+            <xsd:enumeration value="nom_part_infrastruct">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>8</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 8 -->
+            <xsd:enumeration value="nom_part_fef">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>9</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 9 -->
+            <xsd:enumeration value="nom_part_ecg_extn">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>10</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 10 -->
+            <xsd:enumeration value="nom_part_ext_nom">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>256</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 256 -->
+            <xsd:enumeration value="nom_part_priv">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>1024</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 1024 -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- @bitBound 32 -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.TYPE">
+        <xsd:sequence>
+            <xsd:element name="partition" minOccurs="1" maxOccurs="1" type="tns:ice.NomPartition"/>
+            <xsd:element name="code" minOccurs="1" maxOccurs="1" type="tns:ice.OIDType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.Timespec">
+        <xsd:sequence>
+            <xsd:element name="seconds" minOccurs="1" maxOccurs="1" type="tns:ice.TIME_T"/>
+            <xsd:element name="nanoseconds" minOccurs="1" maxOccurs="1" type="tns:ice.INT32"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.AbsoluteTime">
+        <xsd:complexContent>
+            <xsd:restriction base="tns:ice.Timespec">
+                <xsd:sequence>
+                    <xsd:element name="seconds" type="tns:ice.TIME_T" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="nanoseconds" type="tns:ice.INT32" minOccurs="1" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ice.RelativeTime">
+        <xsd:complexContent>
+            <xsd:restriction base="tns:ice.Timespec">
+                <xsd:sequence>
+                    <xsd:element name="seconds" type="tns:ice.TIME_T" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="nanoseconds" type="tns:ice.INT32" minOccurs="1" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ice.HighResRelativeTime">
+        <xsd:complexContent>
+            <xsd:restriction base="tns:ice.Timespec">
+                <xsd:sequence>
+                    <xsd:element name="seconds" type="tns:ice.TIME_T" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="nanoseconds" type="tns:ice.INT32" minOccurs="1" maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="ice.Date">
+        <xsd:sequence>
+            <xsd:element name="century" minOccurs="1" maxOccurs="1" type="tns:ice.INTU8"/>
+            <xsd:element name="year" minOccurs="1" maxOccurs="1" type="tns:ice.INTU8"/>
+            <xsd:element name="month" minOccurs="1" maxOccurs="1" type="tns:ice.INTU8"/>
+            <xsd:element name="day" minOccurs="1" maxOccurs="1" type="tns:ice.INTU8"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:simpleType name="ice.SimpleColor">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="col_black">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0 -->
+            <xsd:enumeration value="col_red">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>1</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 1 -->
+            <xsd:enumeration value="col_green">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>2</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 2 -->
+            <xsd:enumeration value="col_yellow">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>3</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 3 -->
+            <xsd:enumeration value="col_blue">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>4</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 4 -->
+            <xsd:enumeration value="col_magenta">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>5</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 5 -->
+            <xsd:enumeration value="col_cyan">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>6</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 6 -->
+            <xsd:enumeration value="col_white">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>7</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 7 -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- @bitBound 32 -->
+        <!-- @topLevel false -->
+    <xsd:simpleType name="ice.CharSet">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="charset_unspec">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0 -->
+            <xsd:enumeration value="charset_iso_10646_ucs_2">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>1000</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 1000 -->
+            <xsd:enumeration value="charset_iso_10646_ucs_4">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>1001</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 1001 -->
+            <xsd:enumeration value="charset_iso_8859_1">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>4</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 4 -->
+            <xsd:enumeration value="charset_iso_8859_2">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>5</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 5 -->
+            <xsd:enumeration value="charset_iso_8859_3">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>6</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 6 -->
+            <xsd:enumeration value="charset_iso_8859_4">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>7</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 7 -->
+            <xsd:enumeration value="charset_iso_8859_5">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>8</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 8 -->
+            <xsd:enumeration value="charset_iso_8859_6">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>9</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 9 -->
+            <xsd:enumeration value="charset_iso_8859_7">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>10</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 10 -->
+            <xsd:enumeration value="charset_iso_8859_8">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>11</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 11 -->
+            <xsd:enumeration value="charset_iso_8859_9">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>12</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 12 -->
+            <xsd:enumeration value="charset_iso_8859_10">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>13</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 13 -->
+            <xsd:enumeration value="charset_iso_8859_13">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>109</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 109 -->
+            <xsd:enumeration value="charset_iso_8859_14">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>110</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 110 -->
+            <xsd:enumeration value="charset_iso_8859_15">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>111</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 111 -->
+            <xsd:enumeration value="charset_iso_2022_kr">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>37</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 37 -->
+            <xsd:enumeration value="charset_ks_c_5601">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>36</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 36 -->
+            <xsd:enumeration value="charset_iso_2022_jp">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>39</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 39 -->
+            <xsd:enumeration value="charset_iso_2022_jp_2">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>40</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 40 -->
+            <xsd:enumeration value="charset_jis_x0208">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>63</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 63 -->
+            <xsd:enumeration value="charset_iso_2022_cn">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>104</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 104 -->
+            <xsd:enumeration value="charset_gb_2312">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>2025</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 2025 -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- @bitBound 32 -->
+        <!-- @topLevel false -->
+    <xsd:simpleType name="ice.StringFlags">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.StringFlagsBits">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="str_flag_nt">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x1</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x1 -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- @bitBound 32 -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.StringSpec">
+        <xsd:sequence>
+            <xsd:element name="str_max_len" minOccurs="1" maxOccurs="1" type="tns:ice.INTU16"/>
+            <xsd:element name="str_flags" minOccurs="1" maxOccurs="1" type="tns:ice.StringFlags"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.Locale">
+        <xsd:sequence>
+            <xsd:element name="language" minOccurs="1" maxOccurs="1" type="tns:ice.INTU32"/>
+            <xsd:element name="country" minOccurs="1" maxOccurs="1" type="tns:ice.INTU32"/>
+            <xsd:element name="charset" minOccurs="1" maxOccurs="1" type="tns:ice.CharSet"/>
+            <xsd:element name="str_spec" minOccurs="1" maxOccurs="1" type="tns:ice.StringSpec"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.ExtNomenRef">
+        <xsd:sequence>
+            <xsd:element name="nomenclature_id" minOccurs="1" maxOccurs="1" type="tns:ice.OIDType"/>
+            <xsd:element name="nomenclature_code" minOccurs="1" maxOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="128" fixed="true"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.ExtObjRelationEntry">
+        <xsd:sequence>
+            <xsd:element name="relation_type" minOccurs="1" maxOccurs="1" type="tns:ice.OIDType"/>
+            <xsd:element name="related_object" minOccurs="1" maxOccurs="1" type="tns:ice.OIDType"/>
+            <xsd:element name="relation_attributes" minOccurs="1" maxOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="128" fixed="true"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.ExtObjRelationList">
+        <xsd:sequence>
+            <xsd:element name="item" minOccurs="0" maxOccurs="unbounded" type="tns:ice.ExtObjRelationEntry"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ice.SystemModel">
+        <xsd:sequence>
+            <xsd:element name="manufacturer" minOccurs="1" maxOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="128" fixed="true"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="model_number" minOccurs="1" maxOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="128" fixed="true"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:simpleType name="ice.ProdSpecType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="unspecified">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x1</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x1 -->
+            <xsd:enumeration value="serial_number">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x2</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x2 -->
+            <xsd:enumeration value="part_number">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x4</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x4 -->
+            <xsd:enumeration value="hw_revision">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x8</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x8 -->
+            <xsd:enumeration value="sw_revision">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x10</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x10 -->
+            <xsd:enumeration value="fw_revision">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x20</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x20 -->
+            <xsd:enumeration value="protocol_revision">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x40</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x40 -->
+            <xsd:enumeration value="prod_spec_gmdn">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x80</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x80 -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- @bitBound 32 -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.ProdSpecEntry">
+        <xsd:sequence>
+            <xsd:element name="spec_type" minOccurs="1" maxOccurs="1" type="tns:ice.ProdSpecType"/>
+            <xsd:element name="component_id" minOccurs="1" maxOccurs="1" type="tns:ice.PrivateOid"/>
+            <xsd:element name="prod_spec" minOccurs="1" maxOccurs="1">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="128" fixed="true"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.ProductionSpec">
+        <xsd:sequence>
+            <xsd:element name="item" minOccurs="0" maxOccurs="unbounded" type="tns:ice.ProdSpecEntry"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="ice.PatientType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="pt_unspecified">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0 -->
+            <xsd:enumeration value="adult">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>1</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 1 -->
+            <xsd:enumeration value="pediatric">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>2</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 2 -->
+            <xsd:enumeration value="neonatal">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>3</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 3 -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- @bitBound 32 -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.BatMeasure">
+        <xsd:sequence>
+            <xsd:element name="value" minOccurs="1" maxOccurs="1" type="tns:ice.FLOATType"/>
+            <xsd:element name="unit" minOccurs="1" maxOccurs="1" type="tns:ice.OIDType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:simpleType name="ice.CurLimAlStat">
+        <xsd:restriction base="tns:ice.INTU16">
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="ice.CurLimAlStatBits">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="lim_alert_off">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x1</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x1 -->
+            <xsd:enumeration value="lim_low_off">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x2</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x2 -->
+            <xsd:enumeration value="lim_high_off">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <ordinal>0x4</ordinal>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <!-- @ordinal 0x4 -->
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!-- @bitBound 32 -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.CurLimAlVal">
+        <xsd:sequence>
+            <xsd:element name="lower" minOccurs="1" maxOccurs="1" type="tns:ice.FLOATType"/>
+            <xsd:element name="upper" minOccurs="1" maxOccurs="1" type="tns:ice.FLOATType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.EventReport">
+        <xsd:sequence>
+            <xsd:element name="object_class" minOccurs="1" maxOccurs="1" type="tns:ice.OIDType"/>
+                <!-- @key true -->
+            <xsd:element name="object_instance" minOccurs="1" maxOccurs="1" type="tns:ice.HANDLE"/>
+                <!-- @key true -->
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+    <xsd:complexType name="ice.Timestamp">
+        <xsd:sequence>
+            <xsd:element name="discriminator" type="xsd:int"/>
+            <xsd:choice>
+                <!-- case 1 -->
+                <xsd:element name="relative_time" minOccurs="0" maxOccurs="1" type="tns:ice.RelativeTime">
+                    <xsd:annotation>
+                        <xsd:appinfo>
+                            <case>1</case>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:element>
+                <!-- case 2 -->
+                <xsd:element name="hi_res_relative_time" minOccurs="0" maxOccurs="1" type="tns:ice.HighResRelativeTime">
+                    <xsd:annotation>
+                        <xsd:appinfo>
+                            <case>2</case>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:element>
+                <!-- case default -->
+                <xsd:element name="absolute_time" minOccurs="0" maxOccurs="1" type="tns:ice.AbsoluteTime">
+                    <xsd:annotation>
+                        <xsd:appinfo>
+                            <case>default</case>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.Top">
+        <xsd:sequence>
+            <xsd:element name="context_id" minOccurs="1" maxOccurs="1" type="tns:ice.MdsContext"/>
+                <!-- @key true -->
+            <xsd:element name="handle" minOccurs="1" maxOccurs="1" type="tns:ice.HANDLE"/>
+                <!-- @key true -->
+            <xsd:element name="parent_handle" minOccurs="1" maxOccurs="1" type="tns:ice.HANDLE"/>
+                <!-- @key true -->
+        </xsd:sequence>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+    <xsd:complexType name="ice.VMO">
+        <xsd:complexContent>
+            <xsd:extension base="tns:ice.Top">
+                <xsd:sequence>
+                    <xsd:element name="type" minOccurs="1" maxOccurs="1" type="tns:ice.TYPE"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <!-- @struct true -->
+        <!-- @topLevel false -->
+</xsd:schema>

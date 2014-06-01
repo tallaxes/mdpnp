@@ -1,0 +1,24 @@
+/**
+ * @file    nomenclature.idl
+ * @author  WMS
+ * @date    MAR 2014
+ * @brief   DICES DIM nomenclature.
+ * @see     ISO/IEEE 11073 Health informatics - Point-of-care medical device
+ *          communication - Part 10101
+ */
+
+module ice
+{
+//=============================================================================
+/**
+ * Units of measure
+ *
+ * From x73-10101, B.5 Dimensions
+ */
+const long MDC_DIM_HR = 2240;
+const long MDC_DIM_DAY = 2272;
+const long MDC_DIM_WEEKS = 2304;
+const long MDC_DIM_MON = 2336;
+const long MDC_DIM_YR = 2368;
+
+};

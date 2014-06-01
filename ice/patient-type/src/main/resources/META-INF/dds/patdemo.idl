@@ -1,0 +1,272 @@
+/**
+ * @file    patdemo.idl
+ * @author  WMS
+ * @date    OCT 2013
+ * @brief   DICES DIM Patient Demographics object.
+ * @see     ISO/IEEE 11073 Health informatics - Point-of-care medical device
+ *          communication - Parts 10101 and 10201 (x73)
+ *
+ * MAR 2014, WMS : Update based on DocBox PatientIdentity3_3_2014.docx.
+ */
+
+//#include <common.idl>
+
+/**
+ * @file    common.idl
+ * @author  WMS
+ * @date    SEP 2013
+ * @brief   DICES DIM common data types.
+ * @see     ISO/IEEE 11073 Health informatics - Point-of-care medical device
+ *          communication - Parts 10101 and 10201 (x73)
+ */
+
+module patient
+{
+//=============================================================================
+
+/**
+ * Integer and bit string types
+ */
+typedef octet OCTET;
+typedef OCTET INTU8;
+typedef short INT16;
+typedef unsigned short INTU16;
+typedef long INT32;
+typedef unsigned long INTU32;
+typedef INTU16 BITS16;
+typedef INTU32 BITS32;
+
+typedef long TIME_T;
+typedef boolean BOOL;
+
+/**
+ * Identification types
+ */
+typedef INTU16 OIDType;     // See x73-10101 for set of valid OIDs
+typedef INTU16 PrivateOid;  // For IDs not part of the standard nomenclature
+
+typedef INTU16 HANDLE;
+
+/**
+ * Use the instance number data type to distinguish class or object instances
+ * of the same type or object instances that are not directly manageable.
+ */
+typedef INTU16 InstNumber;
+
+typedef float FLOATType;
+
+/**
+ * Unique Device Identification (see FDA).
+ */
+const long MAX_UDI_LENGTH = 100;
+typedef string<MAX_UDI_LENGTH> UDI;
+
+/**
+ * MDS Context ID
+ */
+typedef INTU16 MdsContext;
+
+//#define USE_X73_TIME_DEFINITIONS
+#ifdef USE_X73_TIME_DEFINITIONS
+/**
+ * A value in which each increment represents 125 microseconds (or an 8 kHz
+ * counter). Total duration of 6.2 days.
+ */
+typedef INTU32 RelativeTime;
+
+
+#else  /* USE_X73_TIME_DEFINITIONS is not defined */
+
+/**
+ * AbsoluteTime specifies the number of seconds and nanoseconds since
+ * 1970-01-01 00:00:00 UTC.
+ */
+typedef Timespec AbsoluteTime;
+
+/**
+ * RelativeTime specifies a high-resolution time definition relative to some
+ * event (e.g., a synchronization event at startup). This data type positions
+ * events relative to each other.
+ */
+typedef Timespec RelativeTime;
+
+typedef Timespec HighResRelativeTime;
+#endif
+
+typedef BITS16 StringFlags;
+/**
+ * Alert-Op-State attribute defines the current limit alert state
+ * NOTE--The bits refer to the limit alarm only, not to the global alert
+ * state of the metric
+ */
+typedef BITS16 CurLimAlStat;
+
+};
+
+
+module patient
+{
+//=============================================================================
+/**
+ * Patient Demographics object
+ *
+ * The Patient Demographics object represents patient-related information
+ * relevant in the scope of DICES, but is not vital signs information. 
+ */
+
+enum PatientType
+{
+  pt_unspecified = 0,
+  adult = 1,
+  pediatric = 2,
+  neonatal = 3
+}; //@top-level false
+
+enum PatIdType
+{
+  pid_temporary = 0,
+  pid_medical_record_number = 1,
+  pid_national = 2
+}; //@top-level false
+
+struct PatientIdentificationEntry
+{
+  string<64> patient_id;  //@key
+  PatIdType type;  //@key
+  string<64> provenance;  //@key
+  BOOL verified;
+}; //@top-level false
+typedef sequence<PatientIdentificationEntry> PatientIdentificationList;
+
+enum PatDemoState
+{
+  empty = 0,
+  pre_admitted = 1,
+  admitted = 2,
+  discharged = 8
+}; //@top-level false
+
+/**
+ * Patient Sex refers to chromosomal, gonadal and anatomical characteristics
+ * associated with biological sex.\
+ */
+enum PatientSex
+{
+  sex_unknown = 0,
+  sex_male = 1,
+  sex_female = 2,
+  sex_unspecified = 9  // inteterminate/intersex/unspecified
+}; //@top-level false
+
+/**
+ * Patient Gender refers to an aspect of a person's personal and social
+ * identity. It refers to the way a person feels, presents and is recognized
+ * with the community. Gender refers to outward social markers, including their
+ * name, outward appearance, mannerisms and dress.
+ */
+enum PatientGender
+{
+  gender_unknown = 0,
+  gender_male = 1,
+  gender_female = 2,
+  gender_unspecified = 9
+}; //@top-level false
+
+/**
+ * Patient demographics measured value
+ */
+struct PatMeasure
+{
+  FLOATType value;
+  OIDType m_unit; // code for units of measure
+}; //@top-level false
+
+enum PatientClass
+{
+  ptclass_unspecified = 0,
+  inpatient = 1,
+  outpatient = 2,
+  ptclass_emergency = 3
+}; //@top-level false
+
+enum RaceType
+{
+  /*
+   * From Public Health Information Network Vocabulary Access and Distribution
+   * System (PHIN VADS), Value Set Code PHVS_Race_HL7_2x.
+   *
+   * This race value set is based on HL7 table 0005. The value set was
+   * created for backward compatibility. Recommend using Race Category value
+   * set based on CDC Race & Ethnicity code system.
+   *
+   * See http://www.cdc.gov/nchs/data/dvs/Race_Ethnicity_CodeSet.pdf
+   */
+  race_unspecified = 0,
+  race_am_indian_or_alaska_native = 1,
+  race_asian = 2,
+  race_black_or_african_am = 3,
+  race_native_hawaiian_or_other_pacific_islander = 4,
+  race_other = 5,
+  race_white = 6
+}; //@top-level false
+
+struct PatientRace
+{
+  RaceType race_type;
+  string<32> provenance;
+}; //@top-level false
+const string RaceProvenance_PHVS_Race_HL7_2x = "PHVS_Race_HL7_2x";
+const string RaceProvenance_Unspecified = "Unspecified";
+
+struct PatientDemographics : Top
+{
+  PatDemoState pat_demo_state;
+  PatientClass patient_class;
+  PatientIdentificationList patient_id;
+  string<100> name;   // Unstructured name.
+  string<32> given_name;
+  string<32> family_name;
+  string<32> middle_name;
+  string<32> birth_name;  // Maiden name
+  string<32> suffix_name;
+  string<32> title_name;  // Example: Professor
+  PatientSex sex;
+  PatientGender gender;
+  PatientRace race;
+  PatientType patient_type;
+  Date date_of_birth;
+  PatMeasure chronological_age;  // Time elapsed since birth. For neonatal, Weeks
+
+  // Time elapsed between the first day of the last menstrual period and the
+  // day of delivery. For neonatal, e.g., in hours or in weeks. Units include
+  // Days, weeks, months, years
+  PatMeasure gestational_age;
+  PatMeasure patient_height;
+  PatMeasure patient_weight;        // for neo-natal
+  PatMeasure patient_birth_length;  // for neo-natal
+  PatMeasure patient_birth_weight;  // for neo-natal
+  PatMeasure patient_head_circumference;  // for neo-natal
+  PatientIdentificationEntry mother_patient_id;  // for neo-natal
+  string<100> mother_name;   // Unstructured operator name, for neo-natal
+}; //@top-level true
+const string PatientDemographicsTopic = "ice::PatientDemographics";
+const string PatientDemographicsReqTopic = "ice::PatientDemographicsReq";
+
+struct PatientRequest : Top
+{
+  string correlationId;
+  PatientIdentificationList patient_id;
+};
+
+struct PatientResponse : Top
+{
+  string correlationId;
+  PatientDemographics patient;
+};
+const string PatientRequestTopic = "ice::PatientRequest";
+const string PatientResponseTopic = "ice::PatientResponse";
+
+
+};
+
+
