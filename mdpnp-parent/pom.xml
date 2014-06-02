@@ -25,6 +25,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <mdpnp-demo.version>1.0-SNAPSHOT</mdpnp-demo.version>
+        <vista-rpc.version>0.9-SNAPSHOT</vista-rpc.version>
 
         <!-- Talend Apache ESB platform properties -->
         <tesb.version>5.4.1</tesb.version>
@@ -57,6 +61,7 @@
         <maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
         <maven-resources-plugin.version>2.6</maven-resources-plugin.version> 
         <maven-surefire-plugin.version>2.14.1</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
         <maven-war-plugin.version>2.4</maven-war-plugin.version>
 
         <osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</osgi.import.default.version>    
@@ -64,9 +69,51 @@
         <!-- additiona build and test tools -->
         <jetty-maven-plugin.version>${jetty.version}</jetty-maven-plugin.version>
         <tomcat-maven-plugin.version>2.1</tomcat-maven-plugin.version>
-
-        
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.mdpnp</groupId>
+                <artifactId>test</artifactId>
+                <version>${mdpnp-demo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osehra.vista.soa</groupId>
+                <artifactId>vista-rpc</artifactId>
+                <version>${vista-rpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osehra.vista.soa</groupId>
+                <artifactId>vista-camel</artifactId>
+                <version>${vista-rpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rti.dds.type</groupId>
+                <artifactId>ice-type</artifactId>
+                <version>${mdpnp-demo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rti.dds.type.ice</groupId>
+                <artifactId>patient-type</artifactId>
+                <version>${mdpnp-demo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mdpnp</groupId>
+                <artifactId>vista</artifactId>
+                <version>${mdpnp-demo.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mdpnp</groupId>
+            <artifactId>test</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <pluginManagement>
@@ -122,6 +169,11 @@
                     <version>${maven-surefire-plugin.version}</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                </plugin>
+                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>${exec-maven-plugin.version}</version>
@@ -156,6 +208,60 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <groups></groups>
+                            <excludedGroups>org.mdpnp.test.IntegrationTest,org.mdpnp.test.AcceptanceTest</excludedGroups>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>failsafe-integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*.java</include>
+                            </includes>
+                            <groups>org.mdpnp.test.SelfIntegrationTest,org.mdpnp.test.IntegrationTest,org.mdpnp.test.AcceptanceTest</groups>
+                            <!-- reportsDirectory>target/self-integration-surefire-reports/</reportsDirectory -->
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>failsafe-verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*.java</include>
+                            </includes>
+                            <groups>org.mdpnp.test.SelfIntegrationTest,org.mdpnp.test.IntegrationTest,org.mdpnp.test.AcceptanceTest</groups>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
