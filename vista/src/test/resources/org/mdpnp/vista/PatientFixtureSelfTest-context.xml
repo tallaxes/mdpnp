@@ -17,7 +17,7 @@
             <to uri="log:preSplit"/>
             <split>
                 <simple>body</simple>
-                <to uri="patientFixtureContext:in"/>
+                <to uri="patientFixtureContext:probe"/>
             </split>
         </route>
 

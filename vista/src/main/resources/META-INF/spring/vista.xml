@@ -19,6 +19,7 @@
         <constructor-arg ref="rpcTransport" />
     </bean>
 
+    <!-- emr is the component client interface -->
     <bean id="emr" class="org.mdpnp.vista.rpc.VistaRpcBinding">
         <constructor-arg ref="rpcConnection"/>
     </bean>
@@ -26,10 +27,11 @@
     <camelContext id="vistaContext" xmlns="http://camel.apache.org/schema/spring">
         <propertyPlaceholder id="vista-properties" location="classpath:vista.properties" />
 
-        <endpoint id="vistaIn" uri="direct:in"/>
+        <!-- component endpoint contract -->
+        <endpoint id="in" uri="direct:in"/>
 
         <route id="vista-route">
-            <from ref="vistaIn" />
+            <from uri="direct:in" />
             <to uri="vista:{{vista.host}}:{{vista.port}}" />
         </route>
     </camelContext>
