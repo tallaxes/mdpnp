@@ -11,6 +11,6 @@
 
     <bean id="util" class="org.mdpnp.demo.dds.ice.Util" />
 
-    <bean id="testPatient" class="org.mdpnp.demo.dds.ice.TestPatient" />
+    <bean id="patientFactory" class="org.mdpnp.demo.dds.ice.PatientFactory" />
     
 </beans>

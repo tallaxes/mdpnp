@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"	
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:prop="http://camel.apache.org/schema/placeholder"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd
+		http://activemq.apache.org/schema/core http://activemq.org/config/1.0/1.0.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+         ">
+
+    <!-- 
+    This module mocks Vista at the RPC level.
+    It is not finished.  See the mdpnp :: vista org.mdpnp.vista.mock.mockVista .
+    -->
+    
+    
+    <!-- test data -->
+    <util:list id="patientTestData" value-type="org.mdpnp.vista.api.Patient">
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="1"/>
+                <property name="ssn" value="000-00-3322"/>
+                <property name="name" value="ZZ PATIENT,TEST ONE"/>
+                <property name="sex" value="female"/>
+                <property name="dob" value="1945-01-24"/>
+            </bean>
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="2"/>
+                <property name="ssn" value=""/>
+                <property name="name" value="ZZ PATIENT,TEST TWO"/>
+                <property name="sex" value="male"/>
+                <property name="dob" value="1957-12-25"/>
+            </bean>
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="3"/>
+                <property name="ssn" value=""/>
+                <property name="name" value="ZZ PATIENT,TEST THREE"/>
+                <property name="sex" value="male"/>
+                <property name="dob" value="1968-01-15"/>
+            </bean>
+            <bean class="org.mdpnp.vista.api.Patient">
+                <property name="id" value="4"/>
+                <property name="ssn" value="123-45-6789"/>
+                <property name="name" value="OST,EDWARD"/>
+                <property name="sex" value="male"/>
+                <property name="dob" value="1967-06-10"/>
+            </bean>
+    </util:list>
+
+    <bean id="rpcTransport" class="org.mdpnp.vista.transport.camel.CamelTransport">
+        <constructor-arg ref="vistaContext"/>
+        <constructor-arg value="direct:in"/>
+    </bean>
+
+    <bean id="rpcConnection" class="org.mdpnp.vista.rpc.VistaRpcConnection">
+        <constructor-arg ref="rpcTransport" />
+    </bean>
+
+    <bean id="emr" class="org.mdpnp.vista.rpc.VistaRpcBinding">
+        <constructor-arg ref="rpcConnection"/>
+    </bean>
+
+    <camelContext id="vistaContext" xmlns="http://camel.apache.org/schema/spring">
+        <camel:propertyPlaceholder id="properties" location="ref:propertySources"/>
+
+        <route id="mockVista">
+            <from uri="direct:in" />
+            <to uri="vista:{{vista.mock.host}}:{{vista.mock.port}}" />
+        </route>        
+        
+        <route id="mockVistaIntegration">
+            <from uri="vista:{{vista.mock.host}}:{{vista.mock.port}}" />
+            <log message="##### [mockVistaIntegration] request #####" />
+            <to uri="log:mockVistaIntegration.request?level=DEBUG&amp;showHeaders=true"/>
+            <setBody>
+                <simple>${bean:patientTestData[3]}</simple>
+            </setBody>
+            <log message="##### [mockVistaIntegration] response #####" />
+            <to uri="log:mockVistaIntegration.response?level=DEBUG&amp;showHeaders=true"/>
+        </route>
+
+    </camelContext>
+    
+</beans>

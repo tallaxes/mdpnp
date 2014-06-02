@@ -20,6 +20,8 @@
         <prop key="mirth.receiver.jms.queue">hl7.in</prop>
         <prop key="mirth.mllp.port">6660</prop>
         <prop key="localNetwork">0.0.0.0</prop>
+        <prop key="vista.host">localhost</prop>
+        <prop key="vista.port">9211</prop>
     </util:properties> 
 
     <!-- load just system properties to allow dynamic specification of properties file via local.config System property -->
@@ -34,7 +36,7 @@
         <property name="ignoreResourceNotFound" value="true"/>
     </bean>
 
-    <!-- centralize properties so for reference by both spring and camel property placeholders -->
+    <!-- centralize properties for reference by both spring and camel property placeholders -->
     <bean id="propertySources" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="propertiesArray">
             <util:list>
@@ -47,14 +49,17 @@
                 <bean parent="optionalProperty">
                     <property name="location" value="classpath:app.test.properties"/>
                 </bean>
+                <bean parent="optionalProperty">
+                    <property name="location" value="classpath:vista.properties"/>
+                </bean>
                 <!-- local configuration by developer -->
-                <!-- bean parent="optionalProperty">
+                <bean parent="optionalProperty">
                     <property name="location" value="##local.config##"/>
-                </bean -->
-                <!-- externalized configuration in runtime environment -->
-                <!-- bean parent="optionalProperty">
+                </bean>
+                <!-- externalized configuration by operations in runtime environment -->
+                <bean parent="optionalProperty">
                     <property name="location" value="##external.config##"/>
-                </bean -->
+                </bean>
             </util:list>
         </property>
     </bean>

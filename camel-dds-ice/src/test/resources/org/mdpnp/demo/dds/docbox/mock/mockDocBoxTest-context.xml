@@ -1,0 +1,46 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"	
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:prop="http://camel.apache.org/schema/placeholder"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd
+		http://activemq.apache.org/schema/core http://activemq.org/config/1.0/1.0.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+         ">
+
+    <camelContext id="mockDocBoxTestContext" xmlns="http://camel.apache.org/schema/spring">
+        <!-- camel:propertyPlaceholder id="properties" location="ref:propertySources"/ -->
+
+        <!-- test probe -->
+        <route id="mockDocBoxTest">
+            <from uri="direct:mockDocBoxTest.in"/>
+            <log message="##### [mockDocBoxTest] request #####"/>
+            <to uri="log:mockDocBoxTestFixture.patientRequest?level=DEBUG&amp;showHeaders=true"/>
+            <to uri="mockDocBoxContext:in"/>
+            <log message="##### [mockDocBoxTest] response #####"/>
+            <to uri="log:mockDocBoxTestFixture.patientResponse?level=DEBUG&amp;showHeaders=true"/>
+            <to uri="mock:mockDocBoxTest.out"/>
+        </route>
+
+        <!-- test fixture -->
+        <!-- route id="mockVistaAdaptor">
+            <from uri="rti:/28/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
+            <log message="##### [mockVistaAdaptor] consuming request event #####" />
+            <to uri="log:mockVistaAdaptor.request?level=DEBUG&amp;showHeaders=true"/>
+            <to uri="vistaContext:in" />
+            <log message="##### [mockVistaAdaptor] emitting response event #####" />
+            <to uri="log:mockVistaAdaptor.response?level=DEBUG&amp;showHeaders=true"/>
+            <to uri="rti:/28/ice::PatientResponse(com.rti.dds.type.ice.patient.PatientResponse)/default"/>
+        </route -->
+        
+
+    </camelContext>
+</beans>

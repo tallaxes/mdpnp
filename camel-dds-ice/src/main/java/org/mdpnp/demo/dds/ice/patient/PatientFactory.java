@@ -1,38 +1,42 @@
-package org.mdpnp.demo.dds.ice;
+package org.mdpnp.demo.dds.ice.patient;
 
-import com.rti.dds.type.ice.PatMeasure;
-import com.rti.dds.type.ice.PatientDemographics;
+import com.rti.dds.type.ice.patient.PatMeasure;
+import com.rti.dds.type.ice.patient.PatientDemographics;
 import com.rti.dds.type.ice.Date;
-import com.rti.dds.type.ice.PatDemoState;
-import com.rti.dds.type.ice.PatIdType;
-import com.rti.dds.type.ice.PatientClass;
-import com.rti.dds.type.ice.PatientGender;
-import com.rti.dds.type.ice.PatientIdentificationEntry;
-import com.rti.dds.type.ice.PatientIdentificationEntrySeq;
-import com.rti.dds.type.ice.PatientIdentificationList;
-import com.rti.dds.type.ice.PatientRace;
-import com.rti.dds.type.ice.PatientSex;
-import com.rti.dds.type.ice.PatientType;
-import com.rti.dds.type.ice.RaceType;
+import com.rti.dds.type.ice.patient.PatDemoState;
+import com.rti.dds.type.ice.patient.PatIdType;
+import com.rti.dds.type.ice.patient.PatientClass;
+import com.rti.dds.type.ice.patient.PatientGender;
+import com.rti.dds.type.ice.patient.PatientIdentificationEntry;
+import com.rti.dds.type.ice.patient.PatientIdentificationEntrySeq;
+import com.rti.dds.type.ice.patient.PatientIdentificationList;
+import com.rti.dds.type.ice.patient.PatientRace;
+import com.rti.dds.type.ice.patient.PatientRequest;
+import com.rti.dds.type.ice.patient.PatientResponse;
+import com.rti.dds.type.ice.patient.PatientSex;
+import com.rti.dds.type.ice.patient.PatientType;
+import com.rti.dds.type.ice.patient.RaceType;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class TestPatient {
+public class PatientFactory {
 
-    private PatientDemographics patient;
-    
-    public static PatMeasure createMeasure(float value, short units) {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private PatMeasure createMeasure(float value, short units) {
         PatMeasure measure = (PatMeasure) PatMeasure.create();
         measure.value = value;
         measure.m_unit = units;
         return measure;
     }
 
-    public static PatMeasure createIceMeasure(float value) {
+    private PatMeasure createIceMeasure(float value) {
         return createMeasure(value, (short) 0);
     }
 
-    public static Date createIceDate(byte century, byte year, byte month, byte day) {
+    private Date createIceDate(byte century, byte year, byte month, byte day) {
         Date date = (Date) Date.create();
         date.year = year;
         date.month = month;
@@ -40,14 +44,14 @@ public class TestPatient {
         return date;
     }
     
-    public static PatientRace createIcePatientRace() {
+    private PatientRace createIcePatientRace() {
         PatientRace race = (PatientRace) PatientRace.create();
         race.provenance = "n/a";
         race.race_type = RaceType.race_other;
         return race;
     }
     
-    public static PatientIdentificationEntry createIcePatientIdentificationEntry() {
+    private PatientIdentificationEntry createIcePatientIdentificationEntry() {
         PatientIdentificationEntry idEntry = (PatientIdentificationEntry) PatientIdentificationEntry.create();
         idEntry.patient_id = "123-45-6789";
         idEntry.provenance = "SSN";
@@ -56,7 +60,7 @@ public class TestPatient {
         return idEntry;
     }
  
-    public static PatientIdentificationList createIcePatientIdentificationList() {
+    private PatientIdentificationList createIcePatientIdentificationList() {
         PatientIdentificationList patientIdList = (PatientIdentificationList) PatientIdentificationList.create();
         List patientIds = new ArrayList();
         patientIds.add(createIcePatientIdentificationEntry());
@@ -64,7 +68,8 @@ public class TestPatient {
         return patientIdList;
     }
     
-    public TestPatient() {
+    public PatientDemographics createPatient() {
+        PatientDemographics patient;
         patient = (PatientDemographics) PatientDemographics.create();
         patient.birth_name = "Edward Ost";
         patient.chronological_age = createIceMeasure(47);
@@ -92,15 +97,27 @@ public class TestPatient {
         patient.sex = PatientSex.sex_male;
         patient.suffix_name = "";
         patient.title_name = "";
-    }
-
-    public PatientDemographics getPatient() {
         return patient;
     }
 
-    public void setPatient(PatientDemographics patient) {
-        this.patient = patient;
+    public PatientRequest createPatientRequest() {
+        PatientRequest patientRequest = (PatientRequest) PatientRequest.create();
+        patientRequest.correlationId = PatientQueryUtil.generateCorrelationId();
+        log.debug("createPatientRequest: correlationId: {}", patientRequest.correlationId);
+        return patientRequest;
     }
     
+    public PatientRequest createPatientRequest(PatientIdentificationList patient_id) {
+        PatientRequest patientRequest = createPatientRequest();
+        patientRequest.patient_id.copy_from(patient_id);
+        return patientRequest;
+    }
+    
+    public PatientResponse createPatientResponse(PatientRequest patientRequest) {
+        PatientResponse patientResponse = (PatientResponse) PatientResponse.create();
+        patientResponse.correlationId = patientRequest.correlationId;
+        patientResponse.patient = createPatient();
+        return patientResponse;
+    }
     
 }

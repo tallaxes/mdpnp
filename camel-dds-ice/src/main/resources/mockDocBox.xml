@@ -1,0 +1,75 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"	
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:prop="http://camel.apache.org/schema/placeholder"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd
+		http://activemq.apache.org/schema/core http://activemq.org/config/1.0/1.0.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+         ">
+
+
+    <bean id="patientRequestReplyAggregator" class="org.mdpnp.demo.dds.ice.patient.RequestReplyAggregationStrategy">
+        <constructor-arg value="org.mdpnp.demo.dds.ice.patient.PatientRequestWrapper"/>
+        <constructor-arg value="org.mdpnp.demo.dds.ice.patient.PatientResponseWrapper"/>
+    </bean>
+    
+    <camelContext id="mockDocBoxContext" xmlns="http://camel.apache.org/schema/spring">
+        <!-- camel:propertyPlaceholder id="properties" location="ref:propertySources"/ -->
+
+        <route id="mockDocBoxSender">
+            <from uri="direct:in"/>
+            <log message="--- [mockDocBox] request received ---" />
+            <!-- extra steps required because of lack of getter-setters in idl
+            generated code and lack of dds headers -->
+            <convertBodyTo type="org.mdpnp.demo.dds.ice.patient.PatientRequestWrapper" />
+            <setHeader headerName="docBoxCorrelationId">
+                <simple>${body.correlationId}</simple>
+            </setHeader>
+            <to uri="log:mockDocBoxSender.wrapped?level=DEBUG&amp;showHeaders=true"/>
+            <convertBodyTo type="com.rti.dds.type.ice.patient.PatientRequest" />
+            <log message="--- [mockDocBox] emitting request event (to vista) ---" />
+            <to uri="log:mockDocBoxSender.unwrapped?level=DEBUG&amp;showHeaders=true"/>
+            <to uri="rti:/28/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
+            <convertBodyTo type="org.mdpnp.demo.dds.ice.patient.PatientRequestWrapper" />
+            <log message="--- sending request to aggregator ---" />
+            <to uri="direct:docBoxAggregator"/>
+            <log message="--- [mockDocBox] polling for response ---" />
+            <pollEnrich uri="vm:docBoxResponse"/>
+            <log message="--- [mockDocBox] response received ---" />
+            <convertBodyTo type="com.rti.dds.type.ice.patient.PatientResponse" />
+        </route>
+
+        <route id="mockDocBoxReceiver">
+            <from uri="rti:/28/ice::PatientResponse(com.rti.dds.type.ice.patient.PatientResponse)/default"/>
+            <log message="--- [mockDocBox] consuming response event (from vista) ---" />
+            <convertBodyTo type="org.mdpnp.demo.dds.ice.patient.PatientResponseWrapper" />
+            <setHeader headerName="docBoxCorrelationId">
+                <simple>${body.correlationId}</simple>
+            </setHeader>
+            <to uri="log:mockDocBoxReceiver.wrapped?level=DEBUG&amp;showHeaders=true"/>
+            <log message="--- [mockDocBox] sending response to aggregator ---" />
+            <to uri="direct:docBoxAggregator"/>
+        </route>
+
+        <route id="mockDocBoxAggregator">
+            <from uri="direct:docBoxAggregator"/>
+            <to uri="log:mockDocBoxAggregatorIn?level=DEBUG&amp;showHeaders=true"/>
+            <aggregate completionSize="2" strategyRef="patientRequestReplyAggregator">
+                <correlationExpression>
+                    <header>docBoxCorrelationId</header>
+                </correlationExpression>
+                <to uri="vm:docBoxResponse"/>
+            </aggregate>
+        </route>
+
+    </camelContext>
+</beans>
