@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"	
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:prop="http://camel.apache.org/schema/placeholder"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd
+		http://activemq.apache.org/schema/core http://activemq.org/config/1.0/1.0.xsd
+		http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+         ">
+
+    <camelContext id="patientExampleRoutesTestContext" xmlns="http://camel.apache.org/schema/spring">
+        <route id="deviceConnectivityTestSender">
+            <from uri="direct:test.in"/>
+            <to uri="log:sender?showHeaders=true"/>
+            <to uri="rti:/28/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
+        </route>
+        <route id="deviceConnectivityTestReceiver">
+            <from uri="rti:/29/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
+            <to uri="log:receiver?showHeaders=true"/>
+            <to uri="mock:test.out"/>
+        </route>
+    </camelContext>
+</beans>
