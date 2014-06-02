@@ -14,18 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+<features name="${project.build.finalName}" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
 
     <repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
     <repository>mvn:org.apache.karaf.assemblies.features/enterprise/${karaf.version}/xml/features</repository>
-    <repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
     
-    <feature name='${project.build.finalName}' version='${project.version}' resolver='(obr)'>
+    <feature name='${project.artifactId}' version='${project.version}' resolver='(obr)'>
 
         <bundle dependency='true'>mvn:com.rti.dds/nddsjava/${rti.version}</bundle>
-        <bundle dependency='true'>mvn:com.rti.dds.camel/rti-camel/${camel-rti.version}</bundle>
 
-        <bundle>mvn:${project.groupId}/${project.build.finalName}/${project.version}</bundle>
+        <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
     </feature>
         
 </features>

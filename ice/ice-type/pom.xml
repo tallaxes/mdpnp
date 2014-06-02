@@ -39,7 +39,6 @@
         <dependency>
             <groupId>com.rti.dds</groupId>
             <artifactId>nddsjava</artifactId>
-            <version>${rti.version}</version>
         </dependency>
     </dependencies>
 
@@ -89,7 +88,6 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <!-- Import-Package>com.rti.dds.type.ice, *</Import-Package -->
                         <Export-Package>com.rti.dds.type.ice</Export-Package>
                     </instructions>
                 </configuration>
