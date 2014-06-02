@@ -4,7 +4,6 @@
 
     <groupId>org.mdpnp.demo</groupId>
     <artifactId>vsc</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
