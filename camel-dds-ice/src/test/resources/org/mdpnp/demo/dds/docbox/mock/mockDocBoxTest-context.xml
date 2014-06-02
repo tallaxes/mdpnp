@@ -19,28 +19,20 @@
     <camelContext id="mockDocBoxTestContext" xmlns="http://camel.apache.org/schema/spring">
         <!-- camel:propertyPlaceholder id="properties" location="ref:propertySources"/ -->
 
+        <!-- component endpoint contract -->
+        <endpoint id="in" uri="direct:in"/>
+        <endpoint id="out" uri="mock:out"/>
+
         <!-- test probe -->
         <route id="mockDocBoxTest">
-            <from uri="direct:mockDocBoxTest.in"/>
-            <log message="##### [mockDocBoxTest] request #####"/>
+            <from uri="direct:in"/>
+            <log message="----- [mockDocBoxTest] request -----"/>
             <to uri="log:mockDocBoxTestFixture.patientRequest?level=DEBUG&amp;showHeaders=true"/>
             <to uri="mockDocBoxContext:in"/>
-            <log message="##### [mockDocBoxTest] response #####"/>
+            <log message="----- [mockDocBoxTest] response -----"/>
             <to uri="log:mockDocBoxTestFixture.patientResponse?level=DEBUG&amp;showHeaders=true"/>
-            <to uri="mock:mockDocBoxTest.out"/>
+            <to uri="mock:out"/>
         </route>
-
-        <!-- test fixture -->
-        <!-- route id="mockVistaAdaptor">
-            <from uri="rti:/28/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
-            <log message="##### [mockVistaAdaptor] consuming request event #####" />
-            <to uri="log:mockVistaAdaptor.request?level=DEBUG&amp;showHeaders=true"/>
-            <to uri="vistaContext:in" />
-            <log message="##### [mockVistaAdaptor] emitting response event #####" />
-            <to uri="log:mockVistaAdaptor.response?level=DEBUG&amp;showHeaders=true"/>
-            <to uri="rti:/28/ice::PatientResponse(com.rti.dds.type.ice.patient.PatientResponse)/default"/>
-        </route -->
-        
 
     </camelContext>
 </beans>

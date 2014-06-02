@@ -25,6 +25,9 @@
     <camelContext id="mockDocBoxContext" xmlns="http://camel.apache.org/schema/spring">
         <!-- camel:propertyPlaceholder id="properties" location="ref:propertySources"/ -->
 
+        <!-- component endpoint contract -->
+        <endpoint id="in" uri="direct:in"/>
+
         <route id="mockDocBoxSender">
             <from uri="direct:in"/>
             <log message="--- [mockDocBox] request received ---" />
@@ -36,7 +39,7 @@
             </setHeader>
             <to uri="log:mockDocBoxSender.wrapped?level=DEBUG&amp;showHeaders=true"/>
             <convertBodyTo type="com.rti.dds.type.ice.patient.PatientRequest" />
-            <log message="--- [mockDocBox] emitting request event (to vista) ---" />
+            <log message="--- [mockDocBox] emitting request event (to vista adaptor) ---" />
             <to uri="log:mockDocBoxSender.unwrapped?level=DEBUG&amp;showHeaders=true"/>
             <to uri="rti:/28/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
             <convertBodyTo type="org.mdpnp.demo.dds.ice.patient.PatientRequestWrapper" />
@@ -62,7 +65,7 @@
 
         <route id="mockDocBoxAggregator">
             <from uri="direct:docBoxAggregator"/>
-            <to uri="log:mockDocBoxAggregatorIn?level=DEBUG&amp;showHeaders=true"/>
+            <to uri="log:mockDocBoxAggregator.in?level=DEBUG&amp;showHeaders=true"/>
             <aggregate completionSize="2" strategyRef="patientRequestReplyAggregator">
                 <correlationExpression>
                     <header>docBoxCorrelationId</header>

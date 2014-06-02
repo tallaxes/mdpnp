@@ -30,7 +30,6 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-context</artifactId>
-            <!-- version>${camel.version}</version -->
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -70,7 +69,7 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-mina2</artifactId>
         </dependency>        
-        <dependency>
+        <!-- dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-hl7</artifactId>
         </dependency>        
@@ -83,7 +82,7 @@
             <artifactId>hapi-base</artifactId>
             <version>${hapi.version}</version>
         </dependency>
-        <!-- dependency>
+        <dependency>
             <groupId>ca.uhn.hapi</groupId>
             <artifactId>hapi-structures-v21</artifactId>
             <version>${hapi.version}</version>

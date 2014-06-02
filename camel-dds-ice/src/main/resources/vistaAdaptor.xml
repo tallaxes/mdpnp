@@ -25,34 +25,42 @@
             <!-- convert to vista API object -->
             <!-- convertBodyTo type="org.mdpnp.demo.dds.ice.PatientRequest" to long for vistaGetPatient / -->
             <!-- hard coded to use Edward Ost patient -->
-        <!-- route id="vistaAdaptor">
+        <route id="vistaAdaptor">
             <from uri="rti:/28/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
             <log message="##### [vistaAdaptor] consuming request event #####" />
             <to uri="log:vistaAdaptor.request?level=DEBUG&amp;showHeaders=true"/>
+            <convertBodyTo type="org.mdpnp.demo.dds.ice.patient.PatientRequestWrapper" />
+            <setProperty propertyName="vistaCorrelationId">
+                <simple>${body.correlationId}</simple>
+            </setProperty>
             <setBody>
                 <simple>4</simple>
             </setBody>
-            <to uri="vistaContext:in" />
+            <to uri="bean:emr?method=getPatient"/>
             <convertBodyTo type="org.mdpnp.demo.dds.ice.patient.PatientResponseWrapper" />
-            <setHeader headerName="correlationId">
-                <simple>${body.correlationId}</simple>
+            <setHeader headerName="vistaCorrelationId">
+                <simple>${property.vistaCorrelationId}</simple>
             </setHeader>
-            <to uri="log:vistaAdaptor.wrapped?showHeaders=true"/>
+            <to uri="log:vistaAdaptor.wrapped1?showHeaders=true"/>
+            <setBody>
+                <simple>${body.setCorrelationId(${property.vistaCorrelationId})}</simple>
+            </setBody>
+            <to uri="log:vistaAdaptor.wrapped2?showHeaders=true"/>
             <convertBodyTo type="com.rti.dds.type.ice.patient.PatientResponse" />
-            <log message="##### [mockVistaAdaptor] emitting response event #####" />
+            <log message="##### [vistaAdaptor] emitting response event #####" />
             <to uri="log:vistaAdaptor.response?level=DEBUG&amp;showHeaders=true"/>
             <to uri="rti:/28/ice::PatientResponse(com.rti.dds.type.ice.patient.PatientResponse)/default"/>
-        </route -->
+        </route>
 
-        <route id="mockVistaAdaptor">
+        <!-- route id="mockVistaAdaptor">
             <from uri="rti:/28/ice::PatientRequest(com.rti.dds.type.ice.patient.PatientRequest)/default"/>
             <log message="##### [mockVistaAdaptor] consuming request event #####" />
             <to uri="log:mockVistaAdaptor.request?level=DEBUG&amp;showHeaders=true"/>
             <to uri="vistaContext:in" />
-            <log message="##### [mockVistaAdaptor] emitting response event #####" />
+            <log message="##### [mockVistaAdaptor] emitting response event (back to docbox) #####" />
             <to uri="log:mockVistaAdaptor.response?level=DEBUG&amp;showHeaders=true"/>
             <to uri="rti:/28/ice::PatientResponse(com.rti.dds.type.ice.patient.PatientResponse)/default"/>
-        </route>
+        </route -->
                 
     </camelContext>
 </beans>

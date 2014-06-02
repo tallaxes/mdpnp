@@ -51,19 +51,19 @@ public class PatientFactory {
         return race;
     }
     
-    private PatientIdentificationEntry createIcePatientIdentificationEntry() {
+    private PatientIdentificationEntry createIcePatientIdentificationEntry(String ssn) {
         PatientIdentificationEntry idEntry = (PatientIdentificationEntry) PatientIdentificationEntry.create();
-        idEntry.patient_id = "123-45-6789";
+        idEntry.patient_id = ssn;
         idEntry.provenance = "SSN";
         idEntry.type = PatIdType.pid_national;
         idEntry.verified = true;
         return idEntry;
     }
  
-    private PatientIdentificationList createIcePatientIdentificationList() {
+    private PatientIdentificationList createIcePatientIdentificationList(String ssn) {
         PatientIdentificationList patientIdList = (PatientIdentificationList) PatientIdentificationList.create();
         List patientIds = new ArrayList();
-        patientIds.add(createIcePatientIdentificationEntry());
+        patientIds.add(createIcePatientIdentificationEntry(ssn));
         patientIdList.userData = new PatientIdentificationEntrySeq(patientIds);
         return patientIdList;
     }
@@ -90,7 +90,7 @@ public class PatientFactory {
         patient.patient_class = PatientClass.outpatient;
         patient.patient_head_circumference = createIceMeasure(12);
         patient.patient_height = createIceMeasure(68);
-        patient.patient_id = createIcePatientIdentificationList();
+        patient.patient_id = createIcePatientIdentificationList("123-45-6789");
         patient.patient_type = PatientType.adult;
         patient.patient_weight = createIceMeasure(200);
         patient.race = createIcePatientRace();
@@ -101,14 +101,13 @@ public class PatientFactory {
     }
 
     public PatientRequest createPatientRequest() {
-        PatientRequest patientRequest = (PatientRequest) PatientRequest.create();
-        patientRequest.correlationId = PatientQueryUtil.generateCorrelationId();
-        log.debug("createPatientRequest: correlationId: {}", patientRequest.correlationId);
-        return patientRequest;
+        return createPatientRequest(createIcePatientIdentificationList("123-45-6789"));
     }
     
     public PatientRequest createPatientRequest(PatientIdentificationList patient_id) {
-        PatientRequest patientRequest = createPatientRequest();
+        PatientRequest patientRequest = (PatientRequest) PatientRequest.create();
+        patientRequest.correlationId = PatientQueryUtil.generateCorrelationId();
+        log.debug("createPatientRequest: correlationId: {}", patientRequest.correlationId);
         patientRequest.patient_id.copy_from(patient_id);
         return patientRequest;
     }

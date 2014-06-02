@@ -24,9 +24,8 @@ import org.mdpnp.demo.dds.ice.patient.PatientFactory;
 import org.mdpnp.test.IntegrationTest;
 import org.junit.experimental.categories.Category;
 
-// this test should use mockVistaIntegration.xml rather than rely on a real
-// vista instance.  But the mockVista server with rpc support is not yet
-// finished
+// TODO: this test should use mockVistaIntegration.xml rather than rely on 
+// a real vista instance.  Use mockVista server with rpc support
 
 @Category(IntegrationTest.class)
 @RunWith(CamelSpringJUnit4ClassRunner.class)

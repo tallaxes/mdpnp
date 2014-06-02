@@ -28,8 +28,9 @@ public class PatientResponseWrapper {
         return patientResponse.correlationId;
     }
     
-    public void setCorrelationId(String correlationId) {
+    public PatientResponseWrapper setCorrelationId(String correlationId) {
         patientResponse.correlationId = correlationId;
+        return this;
     }
     
    public String generateCorrelationId() {
