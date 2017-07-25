@@ -57,12 +57,12 @@
         </dependency>
 		
         <!-- OSGi -->
-        <dependency>
+         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi</artifactId>
             <version>3.0.0</version>
         </dependency>
-
+        
         <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -72,6 +72,13 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
+
+	    <dependency>
+	        <groupId>junit</groupId>
+	        <artifactId>junit</artifactId>
+	        <version>4.12</version>
+	        <scope>test</scope>
+	    </dependency>
 
     </dependencies>
 
@@ -115,7 +122,7 @@
                         </property>
                     </systemProperties>
                 </configuration>
-            </plugin>
+  	        </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
