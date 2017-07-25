@@ -33,7 +33,7 @@
         <module>example-shapes</module>
         <!-- module>example-blueprint</module -->
         <module>example-ice</module>
-        <module>example-patdemo</module>
+        <!-- module>example-patdemo</module -->
     </modules>
 
 </project>

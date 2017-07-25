@@ -40,7 +40,7 @@
         <module>rti-camel</module>
         <module>vsc</module>
         <module>examples</module>
-        <module>camel-dds-ice</module>
+<!--    <module>camel-dds-ice</module> -->
     </modules>
 
 </project>
