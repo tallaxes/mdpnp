@@ -11,7 +11,7 @@
 CURDIR=$PWD
 PROJDIR=$(cd $(dirname "$0")/.. && pwd)
 WORKDIR=/tmp/rti
-VERSION=5.0.0
+VERSION=5.3.0
 mkdir -p $WORKDIR
 
 if [ -z "$NDDSHOME" ] ; then
@@ -19,8 +19,8 @@ if [ -z "$NDDSHOME" ] ; then
    exit
 fi
 
-cp $NDDSHOME/class/nddsjava.jar $WORKDIR
-cp $NDDSHOME/class/rtiddsgen.jar $WORKDIR
+cp "$NDDSHOME/resource/app/lib/java/nddsjava.jar" $WORKDIR
+cp "$NDDSHOME/resource/app/lib/java/rtiddsgen2.jar" $WORKDIR
 cp $PROJDIR/bin/bnd-nddsjava-$VERSION.properties $WORKDIR
 
 cd $WORKDIR
@@ -33,6 +33,6 @@ echo OSGi-ify nddsjava.jar for version $VERSION
 java -jar bnd-0.0.384.jar wrap -properties bnd-nddsjava-$VERSION.properties nddsjava.jar
 
 mvn install:install-file -Dfile=./nddsjava.bar -DgroupId=com.rti.dds -DartifactId=nddsjava -Dversion=$VERSION -Dpackaging=jar
-mvn install:install-file -Dfile=./rtiddsgen.jar -DgroupId=com.rti.dds -DartifactId=rtiddsgen -Dversion=$VERSION -Dpackaging=jar
+mvn install:install-file -Dfile=./rtiddsgen2.jar -DgroupId=com.rti.dds -DartifactId=rtiddsgen -Dversion=$VERSION -Dpackaging=jar
 
 cd $CURDIR

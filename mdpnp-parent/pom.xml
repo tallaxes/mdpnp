@@ -31,13 +31,14 @@
         <vista-rpc.version>0.9-SNAPSHOT</vista-rpc.version>
 
         <!-- Talend Apache ESB platform properties -->
-        <tesb.version>5.4.1</tesb.version>
+        <tesb.version>6.1.1</tesb.version>
         <cxf.version>2.7.7</cxf.version>
         <camel.version>2.12.1</camel.version>
         <activemq.version>5.7.0</activemq.version>
         <karaf.version>2.3.3</karaf.version>
         <spring.version>3.2.4.RELEASE</spring.version>
-        <rti.version>5.1.0</rti.version>
+        <rti.version>5.3.0</rti.version>
+        <junit.version>4.12</junit.version>
         <camel-rti.version>1.0-SNAPSHOT</camel-rti.version>
 
         <!-- local nexus repo -->
@@ -60,7 +61,7 @@
         <felix.version>2.4.0</felix.version>
         <maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
         <maven-resources-plugin.version>2.6</maven-resources-plugin.version> 
-        <maven-surefire-plugin.version>2.14.1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
         <maven-war-plugin.version>2.4</maven-war-plugin.version>
 
@@ -105,15 +106,15 @@
                 <artifactId>vista</artifactId>
                 <version>${mdpnp-demo.version}</version>
             </dependency>
+            
+		    <dependency>
+		        <groupId>junit</groupId>
+		        <artifactId>junit</artifactId>
+		        <version>${junit.version}</version>
+		        <scope>test</scope>
+		    </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.mdpnp</groupId>
-            <artifactId>test</artifactId>
-        </dependency>
-    </dependencies>
 
     <build>
         <pluginManagement>

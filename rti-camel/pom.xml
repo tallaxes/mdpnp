@@ -29,14 +29,16 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   
-        <tesb.version>5.4.1</tesb.version>
+        <tesb.version>6.1.1</tesb.version>
+        
         <cxf.version>2.7.7</cxf.version>
         <camel.version>2.12.1</camel.version>
         <activemq.version>5.7.0</activemq.version>
         <karaf.version>2.3.3</karaf.version>
         <spring.version>3.2.4.RELEASE</spring.version>
-        <rti.version>5.1.0</rti.version>
-    
+        <rti.version>5.3.0</rti.version>
+        
+        <jackson.version>1.9.13</jackson.version>
 
         <!-- build plugin versions -->
         <properties-maven-plugin.version>1.0-alpha-2</properties-maven-plugin.version>
@@ -65,7 +67,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+ 
     <dependencies>
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -85,7 +87,7 @@
         </dependency>
         <dependency>
             <groupId>log4j</groupId> 
-            <artifactId>log4j</artifactId> 
+            <artifactId>log4j</artifactId>
         </dependency>
 
         <!-- for testing -->
@@ -104,6 +106,7 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-jaxrs</artifactId>
+            <version>${jackson.version}</version>
             <scope>test</scope>
         </dependency>
     
