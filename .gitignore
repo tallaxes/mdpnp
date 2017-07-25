@@ -19,3 +19,11 @@ hs_err_pid*
 /examples/example-patdemo/patdemo-routing/target/
 /tools/maven-dds/target/
 /rti-camel/target/
+/mdpnp-parent/target/
+/tools/target/
+/vsc/target/
+
+# Eclipse
+.project
+.settings/
+.classpath
