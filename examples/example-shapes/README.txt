@@ -62,7 +62,7 @@ The idl for the data type used in the Shapes demo can be found in the project sh
  
 The example can also be run via the command line (non-OSGi container).  To run the simple example,
 first navigate to the shapes-routing directory.  Then type:
-	mvn exec:java -PShapesExaxmple
+	mvn exec:java -PShapesExample
 
 To run the complex example
 	mvn exec:java -PComplexShapesExample
