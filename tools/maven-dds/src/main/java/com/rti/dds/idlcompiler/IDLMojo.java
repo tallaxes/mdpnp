@@ -66,7 +66,7 @@ public class IDLMojo extends AbstractMojo
      * *.xsd - for XSD files
      * *.wsdl - for WSDL files
      * 
-     * @parameter expression="${rti.idl.idlDir}" default-value="${basedir}/src/main/resources"
+     * @parameter property="rti.idl.idlDir" default-value="${basedir}/src/main/resources"
      */
     private File idlDir;
 
@@ -75,7 +75,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -d outDir
      *
-     * @parameter expression="${rti.idl.outDir}" default-value="${project.build.directory}/generated-sources"
+     * @parameter property="rti.idl.outDir" default-value="${project.build.directory}/generated-sources"
      */
     private File outDir;
 
@@ -84,7 +84,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -language lang
      *
-     * @parameter expression="${rti.idl.lang}" default-value="Java"
+     * @parameter property="rti.idl.lang" default-value="Java"
      */
     private String lang;
 
@@ -93,7 +93,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -namespace
      *
-     * @parameter expression="${rti.idl.namespace}" default-value=""
+     * @parameter property="rti.idl.namespace" default-value=""
      */
     private String namespace;
 
@@ -104,7 +104,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -package packagePrefix
      *
-     * @parameter expression="${rti.idl.packagePrefix}" default-value=""
+     * @parameter property="rti.idl.packagePrefix" default-value=""
      */
     private String packagePrefix;
     
@@ -115,7 +115,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -replace
      *
-     * @parameter expression="${rti.idl.replace}" default-value="true"
+     * @parameter property="rti.idl.replace" default-value="true"
      */
     private boolean replace;
 
@@ -126,7 +126,7 @@ public class IDLMojo extends AbstractMojo
      * 
      * nddsgen option: -debug
      *
-     * @parameter expression="${rti.idl.debug}" default-value="false"
+     * @parameter property="rti.idl.debug" default-value="false"
      */
     private boolean debug;
 
@@ -142,7 +142,7 @@ public class IDLMojo extends AbstractMojo
      * 
      * nddsgen option: -optimization optimizationLevel
      *
-     * @parameter expression="${rti.idl.optimizationLevel}" default-value="0"
+     * @parameter property="rti.idl.optimizationLevel" default-value="0"
      */
     private int optimizationLevel;
 
@@ -152,7 +152,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -stringSize stringSize
      *
-     * @parameter expression="${rti.idl.stringSize}" default-value="255"
+     * @parameter property="rti.idl.stringSize" default-value="255"
      */
     private int stringSize;
 
@@ -162,7 +162,7 @@ public class IDLMojo extends AbstractMojo
      * 
      * nddsgen option: -sequenceSize sequenceSize
      *
-     * @parameter expression="${rti.idl.sequenceSize}" default-value="100"
+     * @parameter property="rti.idl.sequenceSize" default-value="100"
      */
     private int sequenceSize;
 
@@ -179,7 +179,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -notypecode
      *
-     * @parameter expression="${rti.idl.noTypeCode}" default-value="false"
+     * @parameter property="rti.idl.noTypeCode" default-value="false"
      */
     private boolean noTypeCode;
 
@@ -188,7 +188,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -ppDisable
      *
-     * @parameter expression="${rti.idl.ppDisable}" default-value="true"
+     * @parameter property="rti.idl.ppDisable" default-value="true"
      */
     private boolean ppDisable;
 
@@ -197,7 +197,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -ppPath ppPath
      *
-     * @parameter expression="${rti.idl.ppPath}" default-value=""
+     * @parameter property="rti.idl.ppPath" default-value=""
      */
     private String ppPath;
 
@@ -207,7 +207,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -ppOption ppOption
      *
-     * @parameter expression="${rti.idl.ppOption}" default-value=""
+     * @parameter property="rti.idl.ppOption" default-value=""
      */
     private String ppOption;
 
@@ -220,7 +220,7 @@ public class IDLMojo extends AbstractMojo
      * 
      * nddsgen option: -D ppMacros
      *
-     * @parameter expression="${rti.idl.ppMacros}" default-value=""
+     * @parameter property="rti.idl.ppMacros" default-value=""
      */
     private String ppMacro;
 
@@ -231,7 +231,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -U name
      *
-     * @parameter expression="${rti.idl.name}" default-value=""
+     * @parameter property="rti.idl.name" default-value=""
      */
     private String name;
 
@@ -242,7 +242,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -I includeDirectory
      *
-     * @parameter expression="${rti.idl.includeDir}" default-value=""
+     * @parameter property="rti.idl.includeDir" default-value=""
      */
     private String includeDir;
 
@@ -253,7 +253,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -noCopyable
      *
-     * @parameter expression="${rti.idl.noCopyable}" default-value="false"
+     * @parameter property="rti.idl.noCopyable" default-value="false"
      */
     private boolean noCopyable;
 
@@ -262,7 +262,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -use42eAlignment
      *
-     * @parameter expression="${rti.idl.use42eAlignment}" default-value="false"
+     * @parameter property="rti.idl.use42eAlignment" default-value="false"
      */
     private boolean use42eAlignment;
 
@@ -271,7 +271,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -enableEscapeChar
      *
-     * @parameter expression="${rti.idl.enableEscapeChar}" default-value="false"
+     * @parameter property="rti.idl.enableEscapeChar" default-value="false"
      */
     private boolean enableEscapeChar;
 
@@ -282,7 +282,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -convertToXml
      *
-     * @parameter expression="${rti.idl.convertToXml}" default-value="false"
+     * @parameter property="rti.idl.convertToXml" default-value="false"
      */
     private boolean convertToXml;
 
@@ -293,7 +293,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -convertToXsd
      *
-     * @parameter expression="${rti.idl.convertToXsd}" default-value="false"
+     * @parameter property="rti.idl.convertToXsd" default-value="false"
      */
     private boolean convertToXsd;
 
@@ -304,7 +304,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -convertToWsdl
      *
-     * @parameter expression="${rti.idl.convertToWsdl}" default-value="false"
+     * @parameter property="rti.idl.convertToWsdl" default-value="false"
      */
     private boolean convertToWsdl;
 
@@ -315,7 +315,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -convertToIdl
      *
-     * @parameter expression="${rti.idl.convertToIdl}" default-value="false"
+     * @parameter property="rti.idl.convertToIdl" default-value="false"
      */
     private boolean convertToIdl;
 
@@ -326,7 +326,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -convertToCcl
      *
-     * @parameter expression="${rti.idl.convertToCcl}" default-value="false"
+     * @parameter property="rti.idl.convertToCcl" default-value="false"
      */
     private boolean convertToCcl;
 
@@ -337,7 +337,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -convertToCcs
      *
-     * @parameter expression="${rti.idl.convertToCcs}" default-value="false"
+     * @parameter property="rti.idl.convertToCcs" default-value="false"
      */
     private boolean convertToCcs;
 
@@ -348,7 +348,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -version
      *
-     * @parameter expression="${rti.idl.version}" default-value="false"
+     * @parameter property="rti.idl.version" default-value="false"
      */
     private boolean version;
 
@@ -360,7 +360,7 @@ public class IDLMojo extends AbstractMojo
      *
      * nddsgen option: -verbosity verbosityLevel
      *
-     * @parameter expression="${rti.idl.verbosityLevel}" default-value="3"
+     * @parameter property="rti.idl.verbosityLevel" default-value="3"
      */
     private int verbosityLevel;
 
@@ -368,7 +368,7 @@ public class IDLMojo extends AbstractMojo
      * NDDS home is the location of the RTI NDDS installation.  This is required
      * to find all required resources for rtiddsgen.
 
-     * @parameter expression="${rti.idl.nddsHome}" default-value="";
+     * @parameter property="rti.idl.nddsHome" default-value="";
      */
     private File nddsHome;
 
@@ -703,7 +703,10 @@ public class IDLMojo extends AbstractMojo
     }
     
     private void validateNamespace() throws IDLException {
-        rtiDdsGenArgumentList.add("-namespace");
+    	if((namespace != null) && (!namespace.isEmpty())) {
+    		rtiDdsGenArgumentList.add("-namespace");
+    		rtiDdsGenArgumentList.add(namespace);
+    	}
     }
     
     private void findItemsToConvert() throws IDLException {
@@ -778,11 +781,11 @@ public class IDLMojo extends AbstractMojo
         } else if (!nddsHome.canRead()) {
             throw new IDLException("nddsHome is invalid (cannot read)");
         } else {
-            File nddsHomeResource = new File(nddsHome, "resource");
+            File nddsHomeResource = new File(nddsHome, "resource/app/app_support/rtiddsgen");
 
             if ((!nddsHomeResource.exists()) ||
                 (!nddsHomeResource.canRead())) {
-                throw new IDLException("nddsHome is invalid (required files cannot be found)");
+                throw new IDLException("nddsHome is invalid (required files cannot be found) " + nddsHomeResource.toString());
             } else {
                 System.setProperty("NDDSHOME", nddsHome.getAbsolutePath());
                 System.setProperty("NDDS_RESOURCE_DIR", nddsHomeResource.getAbsolutePath());
