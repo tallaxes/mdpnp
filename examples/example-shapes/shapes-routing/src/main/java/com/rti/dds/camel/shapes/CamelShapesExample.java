@@ -27,13 +27,15 @@ public class CamelShapesExample {
 	}
 
 	public static void main(String args[]) throws Exception {
+
 		CamelContext context = new DefaultCamelContext();
 		context.addRoutes(new RouteBuilder() {
 			public void configure() {
-				from("rti:/11/Square(com.rti.dds.type.ShapeType)/default").to(
-						"rti:/12/Circle(com.rti.dds.type.ShapeType)/default");
+				from("rti:/11/Square(com.rti.dds.type.shape.ShapeType)/default").to(
+						"rti:/12/Circle(com.rti.dds.type.shape.ShapeType)/default");
 			}
 		});
+		
 		context.start();
 
 		// pause until user is done
