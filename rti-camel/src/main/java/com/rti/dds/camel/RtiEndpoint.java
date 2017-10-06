@@ -20,6 +20,8 @@ import org.apache.camel.PollingConsumer;
 import org.apache.camel.Processor;
 import org.apache.camel.Producer;
 import org.apache.camel.impl.DefaultEndpoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rti.dds.domain.DomainParticipantFactory;
 
@@ -27,6 +29,8 @@ import com.rti.dds.domain.DomainParticipantFactory;
  * Represents a RTI Endpoint.
  */
 public class RtiEndpoint extends DefaultEndpoint implements DdsInstanceData {
+    private static final transient Logger LOG = LoggerFactory.getLogger(RtiEndpoint.class);
+	
     private RtiEndpointContext ddsContext;
     private String registeredType;
     private boolean useWaitSet;
@@ -68,6 +72,7 @@ public class RtiEndpoint extends DefaultEndpoint implements DdsInstanceData {
             p.lock();
             String className = ((RtiEndpointConfiguration)getEndpointConfiguration()).getTopicClassName();
             registeredType = p.getRegisteredType(RtiHelper.getTypeSupportFqn(className), getCamelContext().getClassResolver());
+            LOG.debug("topicClassName: " + className + "; typeSupportFqn: " + RtiHelper.getTypeSupportFqn(className) + "; registeredType: " + registeredType);
             RtiTopicInstance t = p.getTopics().getInstance(this, getTopicKey());
             if (t != null) {
                 t.lock();

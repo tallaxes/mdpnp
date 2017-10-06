@@ -108,8 +108,13 @@ public class RtiProducer extends DefaultProducer {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-        LOG.trace("RtiProducer[" + topicName + "]: sync send request");
-        writer.write_untyped(exchange.getIn().getBody(), InstanceHandle_t.HANDLE_NIL);
+    	Object body = exchange.getIn().getBody();
+    	if(LOG.isTraceEnabled()) {
+	        LOG.trace("RtiProducer[" + topicName + "]: sync send request");
+	        LOG.trace("RtiProducer[" + topicName + "]: body type: " + body.getClass().getName());
+	        LOG.trace("RtiProducer[" + topicName + "]: body: " + body.toString());
+    	}
+        writer.write_untyped(body, InstanceHandle_t.HANDLE_NIL);
     }
 
     private PublisherQos getPublisherQos(DomainParticipant participant, DdsQosConfiguration config) {
@@ -132,6 +137,7 @@ public class RtiProducer extends DefaultProducer {
     private DataWriterQos getDataWriterQos(DomainParticipant participant, DdsQosConfiguration config) {
     	DataWriterQos qos = new DataWriterQos();
     	participant.get_default_datawriter_qos(qos);
+    	
     	if (config != null && config.isCustom()) {
 			try {
 	    		if (config.getLibrary() != null && config.getProfile() != null) {
@@ -142,6 +148,7 @@ public class RtiProducer extends DefaultProducer {
 				throw new RuntimeCamelException("Cannot create qos instance from profile", e);
 			}
     	}
+    	    	
     	return qos;
     }
     

@@ -23,12 +23,15 @@ import com.rti.dds.topic.Topic;
 import com.rti.dds.topic.TopicQos;
 
 import org.apache.camel.RuntimeCamelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * TODO: doc.
  */
 public class RtiTopicInstance extends DdsReferencedInstance<Topic, TopicQos> {
+    private static final transient Logger LOG = LoggerFactory.getLogger(RtiTopicInstance.class);
 	private DdsInstanceData ddsInstance;
 	private DomainParticipant participant;
 
@@ -38,6 +41,8 @@ public class RtiTopicInstance extends DdsReferencedInstance<Topic, TopicQos> {
 
         participant = parent.getOwner().getValue();
         setQos((TopicQos)createQos(data.getTopicQos()));
+        
+        LOG.trace("topic: " + data.getTopic() + "; type: " + data.getRegisteredType());
         setValue(participant.create_topic(
             data.getTopic(),
             data.getRegisteredType(),
