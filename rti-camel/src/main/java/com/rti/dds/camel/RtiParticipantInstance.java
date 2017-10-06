@@ -22,6 +22,7 @@ import java.util.Map;
 import com.rti.dds.domain.DomainParticipant;
 import com.rti.dds.domain.DomainParticipantFactory;
 import com.rti.dds.domain.DomainParticipantQos;
+import com.rti.dds.infrastructure.PropertyQosPolicyHelper;
 import com.rti.dds.infrastructure.Qos;
 import com.rti.dds.infrastructure.StatusKind;
 import com.rti.dds.topic.TypeSupportImpl;
@@ -116,6 +117,31 @@ public class RtiParticipantInstance extends DdsReferencedInstance<DomainParticip
 				throw new RuntimeCamelException("Cannot create qos instance from profile", e);
 			}
     	}
+    	
+    	final int MAX_SIZE = 8192;
+		qos.resource_limits.type_code_max_serialized_length = MAX_SIZE;
+		qos.resource_limits.type_object_max_serialized_length = MAX_SIZE;
+		
+    	PropertyQosPolicyHelper.add_property (
+    			qos.property,
+    			"dds.builtin_type.string.max_size", 
+    			String.valueOf(MAX_SIZE), false);
+    	PropertyQosPolicyHelper.add_property (
+    			qos.property,
+    			"dds.builtin_type.octets.max_size", 
+    			String.valueOf(MAX_SIZE), false);
+
+        // https://community.rti.com/static/documentation/connext-dds/5.3.0/doc/manuals/connext_dds/html_files/RTI_ConnextDDS_CoreLibraries_UsersManual/index.htm#UsersManual/Managing_Memory_for_Built_in_Types.htm
+    	// for DataReaders/Writers 
+    	PropertyQosPolicyHelper.add_property (
+    			qos.property,
+    			"dds.builtin_type.string.alloc_size", 
+    			String.valueOf(MAX_SIZE), false);
+    	PropertyQosPolicyHelper.add_property (
+    			qos.property,
+    			"dds.builtin_type.octets.alloc_size", 
+    			String.valueOf(MAX_SIZE), false);
+    	
     	return qos;
     }
 }
